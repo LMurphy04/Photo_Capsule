@@ -1,0 +1,13 @@
+{% extends 'photocapsule/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Profile Results
+{% endblock %}
+
+{% block body_block %}
+    <p>Profile Results</p>
+    <ul>
+        <li><a href="{% url 'photocapsule:photo' %}">Photo</a></li>
+    </ul>
+{% endblock %}

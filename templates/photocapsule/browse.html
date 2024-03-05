@@ -1,0 +1,14 @@
+{% extends 'photocapsule/base.html' %}
+{% load staticfiles %}
+
+{% block title_block %}
+    Browse
+{% endblock %}
+
+{% block body_block %}
+    <p>Browse</p>
+    <ul>
+        <li><a href="{% url 'photocapsule:profile-results' %}">Browse by Profile</a></li>
+        <li><a href="{% url 'photocapsule:category-results' %}">Browse by Category</a></li>
+    </ul>
+{% endblock %}

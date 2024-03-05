@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+
+<html>
+    <head>
+        <title>
+            Photo Capsule -
+            {% block title_block %}
+            {% endblock %}
+        </title>
+    </head>
+    <body>
+        <div>
+            <p>Links shown regardless</p>
+            <ul>
+                <li><a href="{% url 'photocapsule:index' %}">Home</a></li>
+                <li><a href="{% url 'photocapsule:browse' %}">Browse</a></li>
+            </ul>
+            <p>Links shown if signed out</p>
+            <ul>
+                <li><a href="{% url 'photocapsule:register' %}">Register</a></li>
+                <li><a href="{% url 'photocapsule:sign-in' %}">Sign In</a></li>
+            </ul>
+            <p>Links shown if signed in</p>
+            <ul>
+                <li><a href="{% url 'photocapsule:profile' %}">Profile</a></li>
+                <li><a href="{% url 'photocapsule:upload' %}">Upload</a></li>
+                <li><a href="{% url 'photocapsule:sign-out' %}">Sign Out</a></li>
+            </ul>
+        </div>
+        <hr />
+        <div>
+            {% block body_block %}
+            {% endblock %}
+        </div>
+        <hr />
+        <div>
+            <p>[placeholder footer] PHOTO CAPSULE CREATED 2024 | FOR HELP CONTACT SUPPORT @ photo-capsule@gmail.com</p>
+        </div>
+    </body>
+</html>
