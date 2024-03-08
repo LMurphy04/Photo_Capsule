@@ -1,0 +1,52 @@
+html {
+    background-color:#4c4cfd;
+}
+
+header {
+    height:125px;
+    padding:25px;
+}
+
+body {
+    margin:0;
+}
+
+.content {
+    background-color:white;
+    padding-left:10px;
+    padding-right:10px;
+    border-top:2px solid black;
+    border-bottom:2px solid black;
+}
+
+#logo {
+    float:left;
+    height:100%;
+}
+
+#navbar ul {
+    float:left;
+}
+
+#navbar {
+    float:right;
+    height:100%;
+}
+
+#navbar li {
+    background-color:white;
+    padding:5px;
+    list-style-type:none;
+    border:1px solid black;
+    margin:2px;
+}
+
+#navbar a {
+    color:#4c4cfd;
+}
+
+footer {
+    color:white;
+    width:100%;
+    text-align:center;
+}
