@@ -3,7 +3,7 @@ html {
 }
 
 header {
-    height:125px;
+    height:10vh;
     padding:25px;
 }
 
@@ -26,6 +26,7 @@ body {
 
 #navbar ul {
     float:left;
+    margin:0;
 }
 
 #navbar {

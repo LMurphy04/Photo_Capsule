@@ -1,3 +1,9 @@
 from django.contrib import admin
+from photocapsule.models import *
 
-# Register your models here.
+admin.site.register(UserProfile)
+admin.site.register(Category)
+admin.site.register(Photo)
+admin.site.register(UserLike)
+admin.site.register(CategoryPhoto)
+admin.site.register(Comment)

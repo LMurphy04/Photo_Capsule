@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profilePicture = models.ImageField(upload_to='media/profile_pictures') 
+    profilePicture = models.ImageField(upload_to='profile_pictures', default='profile_pictures/default.png') 
     def __str__(self):
         return self.user.username
     
@@ -21,7 +21,7 @@ class Photo(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=25)
     description = models.CharField(max_length=300)
-    image = models.ImageField(blank=False)
+    image = models.ImageField(upload_to='uploads', blank=False)
     likes = models.IntegerField(default=0)
     uploadDate = models.DateTimeField(auto_now_add=True)
     def __str__(self):
