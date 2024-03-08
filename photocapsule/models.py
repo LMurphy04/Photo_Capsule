@@ -5,9 +5,7 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #need to implement default profile picture should user not upload
-    #and upload location
-    #profilePicture = models.ImageField() 
+    profilePicture = models.ImageField(upload_to='media/profile_pictures') 
     def __str__(self):
         return self.user.username
     
