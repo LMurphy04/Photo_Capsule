@@ -32,6 +32,7 @@ class Photo(models.Model):
 class UserLike(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     photoID = models.ForeignKey(Photo, on_delete=models.CASCADE)
+    date = models.DateTimeField(auto_now_add=True)
     
     
     
