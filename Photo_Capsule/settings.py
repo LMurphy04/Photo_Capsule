@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'registration',
     'photocapsule',
+    
 ]
 
 MIDDLEWARE = [
@@ -111,6 +113,11 @@ AUTH_PASSWORD_VALIDATORS = [
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
+
+REGISTRATION_OPEN=True
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = 'photocapsule:index'
+LOGIN_URL = 'auth_login'
 
 USE_I18N = True
 
