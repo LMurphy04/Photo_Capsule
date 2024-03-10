@@ -27,7 +27,7 @@
                     <li><a href="{% url 'photocapsule:upload' %}">Upload</a></li>
                 </ul>
                 <ul>
-                    <li><a href="{% url 'photocapsule:sign-out' %}">Sign Out</a></li>
+                    <li><a href="{% url 'auth_logout' %}?next={% url 'photocapsule:index' %}.">Sign Out</a></li>
                 </ul>
             </div>
         </header>
