@@ -14,20 +14,28 @@
         <header>
             <img id="logo" src="{% static 'images/PhotoCapsuleLogoWhite.png' %}" alt="Photo Capsule Logo" />
             <div id="navbar">
+                <ul id="account">
+                    <li>
+                        <p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'photocapsule:profile' %}">{{ user.username }}</a>
+                            <img id="profilePicture" src="{{ user.userprofile.profilePicture.url }}" alt="Profile Picture" />
+                        {% else %}
+                            logged out
+                        {% endif %}
+                        </p>
+                    </li>
+                </ul>
                 <ul>
                     <li><a href="{% url 'photocapsule:index' %}">Home</a></li>
                     <li><a href="{% url 'photocapsule:browse' %}">Browse</a></li>
-                </ul>
-                <ul>
-                    <li><a href="{% url 'registration_register' %}">Register</a></li>
-                    <li><a href="{% url 'photocapsule:sign-in' %}">Sign In</a></li>
-                </ul>
-                <ul>
-                    <li><a href="{% url 'photocapsule:profile' %}">Profile</a></li>
-                    <li><a href="{% url 'photocapsule:upload' %}">Upload</a></li>
-                </ul>
-                <ul>
-                    <li><a href="{% url 'auth_logout' %}?next={% url 'photocapsule:index' %}.">Sign Out</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'photocapsule:upload' %}">Upload</a></li>
+                        <li><a href="{% url 'auth_logout' %}?next={% url 'photocapsule:index' %}.">Log Out</a></li>
+                    {% else %}
+                        <li><a href="{% url 'registration_register' %}">Register</a></li>
+                        <li><a href="{% url 'auth_login' %}">Log In</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </header>

@@ -1,5 +1,4 @@
 {% extends 'photocapsule/base.html' %}
-{% load staticfiles %}
 
 {% block title_block %}
     Login
@@ -14,4 +13,8 @@
         <input type="submit" value="Log In" />
         <input type="hidden" name="next" value="{{ next }}" />
     </form>
+    <p>
+        Not registered?
+        <a href="{% url 'registration_register' %}">Register here!</a>
+    </p>
 {% endblock %}

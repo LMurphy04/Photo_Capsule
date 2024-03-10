@@ -6,21 +6,17 @@ from django.dispatch import receiver
 from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
+from django.contrib.auth.decorators import login_required
 
 @receiver(user_registered)
 def create_user_profile(sender, user, request, **kwargs):
     profile = UserProfile(user=user)
     profile.save()
 
-
 def index(request):
     return render(request, 'photocapsule/index.html', context={})
 
-
-
-def signIn(request):
-    return render(request, 'photocapsule/sign-in.html', context={})
-
+@login_required
 def upload(request):
     return render(request, 'photocapsule/upload.html', context={})
 
@@ -33,14 +29,13 @@ def profileResults(request):
 def categoryResults(request):
     return render(request, 'photocapsule/category-results.html', context={})
 
+@login_required
 def profile(request):
     return render(request, 'photocapsule/profile.html', context={})
 
+@login_required
 def editProfile(request):
     return render(request, 'photocapsule/edit-profile.html', context={})
 
 def photo(request):
     return render(request, 'photocapsule/photo.html', context={})
-
-def signOut(request):
-    return redirect(reverse('photocapsule:index'))

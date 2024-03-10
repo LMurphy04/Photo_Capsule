@@ -13,8 +13,8 @@ body {
 
 .content {
     background-color:white;
-    padding-left:10px;
-    padding-right:10px;
+    padding:10px;
+    padding-top:0;
     border-top:2px solid black;
     border-bottom:2px solid black;
 }
@@ -22,16 +22,27 @@ body {
 #logo {
     float:left;
     height:100%;
+    max-width:60vw;
 }
 
-#navbar ul {
+#profilePicture {
+    height:50px;
+    width:50px;
+}
+
+#navbar ul li {
     float:left;
-    margin:0;
 }
 
 #navbar {
     float:right;
     height:100%;
+    width:320px;
+    margin-right:40px;
+}
+
+#navbar p {
+    margin:0;
 }
 
 #navbar li {
@@ -39,7 +50,8 @@ body {
     padding:5px;
     list-style-type:none;
     border:1px solid black;
-    margin:2px;
+    margin:1px;
+    width: 55px;
 }
 
 #navbar a {
@@ -50,4 +62,13 @@ footer {
     color:white;
     width:100%;
     text-align:center;
+}
+
+#account li{
+    width:262px;
+    margin:0;
+}
+
+#account img{
+    float:right;
 }
