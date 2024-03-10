@@ -5,7 +5,6 @@ app_name = 'photocapsule'
 
 urlpatterns = [
     path('', views.index, name='index'),
-    path('register', views.register, name='register'),
     path('sign-in', views.signIn, name='sign-in'),
     path('upload', views.upload, name='upload'),
     path('browse', views.browse, name='browse'),

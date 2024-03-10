@@ -1,12 +1,22 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.urls import reverse
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from registration.signals import user_registered
+from django.contrib.auth.models import User
+from .models import UserProfile
+
+@receiver(user_registered)
+def create_user_profile(sender, user, request, **kwargs):
+    profile = UserProfile(user=user)
+    profile.save()
+
 
 def index(request):
     return render(request, 'photocapsule/index.html', context={})
 
-def register(request):
-    return render(request, 'photocapsule/register.html', context={})
+
 
 def signIn(request):
     return render(request, 'photocapsule/sign-in.html', context={})
