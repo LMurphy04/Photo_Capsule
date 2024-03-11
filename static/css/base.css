@@ -26,8 +26,8 @@ body {
 }
 
 #profilePicture {
-    height:50px;
-    width:50px;
+    height:30px;
+    width:30px;
 }
 
 #navbar ul li {
@@ -71,4 +71,8 @@ footer {
 
 #account img{
     float:right;
+}
+
+#account {
+    margin:0;
 }
