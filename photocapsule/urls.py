@@ -9,7 +9,7 @@ urlpatterns = [
     path('browse', views.browse, name='browse'),
     path('browse/username', views.profileResults, name='profile-results'),
     path('browse/category', views.categoryResults, name='category-results'),
-    path('profile', views.profile, name='profile'),
-    path('profile/edit', views.editProfile, name='edit-profile'),
+    path('profile/<str:userPage>', views.profile, name='profile'),
+    path('profile/<str:userPage>/edit', views.editProfile, name='edit-profile'),
     path('photos/username/image-id', views.photo, name='photo'),
 ]

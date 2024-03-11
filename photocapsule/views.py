@@ -7,6 +7,7 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
+from photocapsule.models import User, Photo
 
 @receiver(user_registered)
 def create_user_profile(sender, user, request, **kwargs):
@@ -30,12 +31,25 @@ def categoryResults(request):
     return render(request, 'photocapsule/category-results.html', context={})
 
 @login_required
-def profile(request):
-    return render(request, 'photocapsule/profile.html', context={})
+def profile(request, userPage):
+    context_dict = {}
+    try:
+        userPage = User.objects.get(username=userPage)
+        context_dict['userPage'] = userPage
+        context_dict['photos'] = Photo.objects.filter(userID=userPage)
+    except User.DoesNotExist:
+        context_dict['userPage'] = None
+        context_dict['photos'] = None
+    return render(request, 'photocapsule/profile.html', context=context_dict)
 
 @login_required
-def editProfile(request):
-    return render(request, 'photocapsule/edit-profile.html', context={})
+def editProfile(request, userPage):
+    context_dict = {}
+    try:
+        context_dict['userPage'] = User.objects.get(username=userPage)
+    except User.DoesNotExist:
+        context_dict['userPage'] = None
+    return render(request, 'photocapsule/edit-profile.html', context=context_dict)
 
 def photo(request):
     return render(request, 'photocapsule/photo.html', context={})
