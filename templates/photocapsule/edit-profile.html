@@ -7,4 +7,11 @@
 
 {% block body_block %}
     <p>Edit Profile</p>
+    <p>
+        {% if userPage and userPage.username == user.username %}
+            User exists and is logged in to correct account
+        {% else %}
+            Shouldn't be allowed on page.
+        {% endif %}
+    </p>
 {% endblock %}

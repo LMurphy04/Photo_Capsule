@@ -6,8 +6,30 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Profile</p>
-    <ul>
-        <li><a href="{% url 'photocapsule:edit-profile' %}">Edit Profile</a></li>
-    </ul>
+    <h1>Profile</h1>
+    {% if userPage.username == user.username %}
+        <ul>
+            <li><a href="{% url 'photocapsule:edit-profile' user.username %}">Edit Profile</a></li>
+        </ul>
+    {% endif %}
+    {% if userPage %}
+        <h2>Details</h2>
+        <ul>
+            <li>{{ userPage.username }}</li>
+            <li>{{ userPage.email }}</li>
+            <li><img id="profilePicture" src="{{ userPage.userprofile.profilePicture.url }}" alt="Profile Picture" /></li>
+        </ul>
+        <h2>Photos</h2>
+        <ul>
+            {% if photos %}
+                {% for photo in photos %}
+                <li><p>{{ photo.title }}</p></li>
+                {% endfor %}
+            {% else %}
+                No photos.
+            {% endif %}
+        </ul>
+    {% else %}
+        User not found.
+    {% endif %}
 {% endblock %}
