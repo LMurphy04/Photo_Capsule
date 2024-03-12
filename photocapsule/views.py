@@ -30,7 +30,6 @@ def profileResults(request):
 def categoryResults(request):
     return render(request, 'photocapsule/category-results.html', context={})
 
-@login_required
 def profile(request, userPage):
     context_dict = {}
     try:

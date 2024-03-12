@@ -23,7 +23,7 @@
         <ul>
             {% if photos %}
                 {% for photo in photos %}
-                <li><p>{{ photo.title }}</p></li>
+                <li><p>{{ photo.title }}</p><img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" /></li>
                 {% endfor %}
             {% else %}
                 No photos.
