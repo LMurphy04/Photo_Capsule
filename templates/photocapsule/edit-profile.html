@@ -6,12 +6,11 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Edit Profile</p>
-    <p>
-        {% if userPage and userPage.username == user.username %}
-            User exists and is logged in to correct account
-        {% else %}
-            Shouldn't be allowed on page.
-        {% endif %}
-    </p>
+    <h1>Edit Profile</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        {{ profile_form.as_p }}
+        <button type="submit">Update Profile</button>
+    </form>
 {% endblock %}

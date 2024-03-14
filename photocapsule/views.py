@@ -8,6 +8,8 @@ from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
 from photocapsule.models import User, Photo
+from django.contrib import messages
+from photocapsule.forms import UserForm, ProfileForm
 
 @receiver(user_registered)
 def create_user_profile(sender, user, request, **kwargs):
@@ -43,12 +45,23 @@ def profile(request, userPage):
 
 @login_required
 def editProfile(request, userPage):
-    context_dict = {}
-    try:
-        context_dict['userPage'] = User.objects.get(username=userPage)
-    except User.DoesNotExist:
-        context_dict['userPage'] = None
-    return render(request, 'photocapsule/edit-profile.html', context=context_dict)
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated!')
+            return render(request, 'photocapsule/index.html')
+
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.userprofile)
+
+    return render(request, 'photocapsule/edit-profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
 def photo(request):
     return render(request, 'photocapsule/photo.html', context={})
+
+
