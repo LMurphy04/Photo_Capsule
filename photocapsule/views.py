@@ -7,7 +7,7 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-from photocapsule.models import User, Photo
+from photocapsule.models import User, Photo, Category
 from django.contrib import messages
 from photocapsule.forms import UserForm, ProfileForm
 
@@ -24,13 +24,35 @@ def upload(request):
     return render(request, 'photocapsule/upload.html', context={})
 
 def browse(request):
-    return render(request, 'photocapsule/browse.html', context={})
+    result_list = []
+    if request.method == 'POST':
+        profile = request.POST['profile'].strip()
+        result_list = User.objects.filter(username__contains=profile)
+    else:
+        result_list = User.objects.filter()
+    return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
 
-def profileResults(request):
-    return render(request, 'photocapsule/profile-results.html', context={})
+def profileResults(request, userPage):
+    context_dict = {}
+    try:
+        userPage = User.objects.get(username=userPage)
+        context_dict['userPage'] = userPage
+        context_dict['photos'] = Photo.objects.filter(userID=userPage)
+    except User.DoesNotExist:
+        context_dict['userPage'] = None
+        context_dict['photos'] = None
+    return render(request, 'photocapsule/profile.html', context=context_dict)
 
-def categoryResults(request):
-    return render(request, 'photocapsule/category-results.html', context={})
+def categoryResults(request, category):
+    context_dict = {}
+    try:
+        category = Category.objects.get(categoryName=category)
+        context_dict['category'] = category
+        context_dict['photos'] = Photo.objects.filter(categoryphoto__categoryID=category)
+    except Category.DoesNotExist:
+        context_dict['category'] = None
+        context_dict['photos'] = None
+    return render(request, 'photocapsule/category-results.html', context=context_dict)
 
 def profile(request, userPage):
     context_dict = {}
@@ -61,7 +83,7 @@ def editProfile(request, userPage):
 
     return render(request, 'photocapsule/edit-profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
-def photo(request):
-    return render(request, 'photocapsule/photo.html', context={})
+def photo(request, userPage, photo):
+    return render(request, 'photocapsule/photo.html', context={'photo': Photo.objects.get(id=photo)})
 
 

@@ -6,8 +6,12 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Category Results</p>
-    <ul>
-        <li><a href="{% url 'photocapsule:photo' %}">Photo</a></li>
-    </ul>
+    <p>{{ category.categoryName }}</p>
+    {% if photos %}
+        <ul>
+            {% for photo in photos %}
+                <li><a href="{% url 'photocapsule:photo' photo.userID photo.id %}">{{ photo.title }}</a><img id="photo" src="{{ photo.image.url }}" alt="Photo" /></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
