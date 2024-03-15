@@ -6,9 +6,30 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Browse</p>
-    <ul>
-        <li><a href="{% url 'photocapsule:profile-results' %}">Browse by Profile</a></li>
-        <li><a href="{% url 'photocapsule:category-results' %}">Browse by Category</a></li>
-    </ul>
+    <h1>Browse</h1>
+    <div>
+        <h2>Profile Search</h2>
+        <form method="post" action="{% url 'photocapsule:browse' %}">
+            {% csrf_token %}
+        
+            <input type="text" size="40" name="profile" />
+            <button type="submit" name="submit">Search</button>
+        </form>
+        {% if result_list %}
+            <h2>Profiles</h2>
+            <ul>
+                {% for user in result_list %}
+                    <li><a href="{% url 'photocapsule:profile-results' user.username %}">{{ user.username }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div>
+        <h2>Category Search</h2>
+        <ul>
+            {% for category in categories %}
+                <li><a href="{% url 'photocapsule:category-results' category.categoryName %}">{{ category.categoryName }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}

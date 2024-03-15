@@ -6,5 +6,7 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Photo Details</p>
+    <p>{{ photo.title }}</p>
+    <p>{{ photo.userID.username }}</p>
+    <img id="photo" src="{{ photo.image.url }}" alt="Photo" />
 {% endblock %}
