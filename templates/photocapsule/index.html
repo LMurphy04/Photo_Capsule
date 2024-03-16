@@ -6,5 +6,21 @@
 {% endblock %}
 
 {% block body_block %}
-    <p>Homepage</p>
+    <h1>Homepage</h1>
+    <h2>Recent</h2>
+    {% if recent %}
+        {% for photo in recent %}
+        <li><p>{{ photo.title }}</p><img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" /></li>
+        {% endfor %}
+    {% else %}
+        No photos.
+    {% endif %}
+    <h2>Trending</h2>
+    {% if likes %}
+        {% for photo in likes %}
+        <li><p>{{ photo.title }}</p><img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" /></li>
+        {% endfor %}
+    {% else %}
+        No photos.
+    {% endif %}
 {% endblock %}

@@ -10,6 +10,7 @@ from django.contrib.auth.decorators import login_required
 from photocapsule.models import User, Photo, Category
 from django.contrib import messages
 from photocapsule.forms import UserForm, ProfileForm
+from datetime import datetime, timedelta
 
 @receiver(user_registered)
 def create_user_profile(sender, user, request, **kwargs):
@@ -17,7 +18,10 @@ def create_user_profile(sender, user, request, **kwargs):
     profile.save()
 
 def index(request):
-    return render(request, 'photocapsule/index.html', context={})
+    context_dict = {}
+    context_dict['recent'] = Photo.objects.all().order_by('-uploadDate')[:4]
+    context_dict['likes'] = Photo.objects.filter(uploadDate__gte = datetime.now() - timedelta(days=1)).order_by('-likes')[:4]
+    return render(request, 'photocapsule/index.html', context=context_dict)
 
 @login_required
 def upload(request):
