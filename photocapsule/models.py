@@ -48,6 +48,6 @@ class Comment(models.Model):
     uploadDate = models.DateTimeField(auto_now_add=True)
     #unsure of how it will be used so can be edited later
     def __str__(self):
-        return str(self.userID) + ' ' + str(self.photoID) + ' ' + self.uploadDate
+        return str(self.userID) + ' ' + str(self.photoID) + ' ' + str(self.uploadDate)
     
 
