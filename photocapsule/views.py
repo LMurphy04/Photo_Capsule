@@ -35,8 +35,11 @@ def browse(request):
 
         #create list of profiles to display
         profile_http = ""
-        for user in result_list:
-            profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
+        if len(result_list) == 0:
+            profile_http += '<li>No Profiles Found!</li>'
+        else:
+            for user in result_list:
+                profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
 
         return HttpResponse(profile_http)
     else:
