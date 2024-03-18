@@ -12,3 +12,7 @@ function getProfiles() {
     xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhttp.send("profile="+search);
 }
+
+function sortPhotos(type) {
+    alert("Feature Coming Soon!")
+}
