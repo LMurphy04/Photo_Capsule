@@ -29,7 +29,7 @@
         <div class="col-md-2 mx-3 pb-2 rounded bg-light-blue border border-dark">
             <h2 class="text-light text-center mt-4 mb-4">Category</h2>
             {% for category in categories %}
-                <a class="btn btn-light text-start border border-dark w-100 mb-1" href="{% url 'photocapsule:category-results' category.categoryName %}">{{ category.categoryName }}</a>
+                <a class="btn btn-light text-start border border-dark w-100 mb-1" href="{% url 'photocapsule:category-results' category.categoryName %}"><u>{{ category.categoryName }}</u></a>
             {% endfor %}
         </div>
     </div>
