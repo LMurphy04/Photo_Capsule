@@ -29,12 +29,19 @@ def upload(request):
 
 def browse(request):
     result_list = []
-    if request.method == 'POST':
+    if request.is_ajax():
         profile = request.POST['profile'].strip()
         result_list = User.objects.filter(username__contains=profile)
+
+        #create list of profiles to display
+        profile_http = ""
+        for user in result_list:
+            profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
+
+        return HttpResponse(profile_http)
     else:
         result_list = User.objects.filter()
-    return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
+        return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
 
 def profileResults(request, userPage):
     context_dict = {}
