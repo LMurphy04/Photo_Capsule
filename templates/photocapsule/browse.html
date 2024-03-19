@@ -15,12 +15,13 @@
     <div class="row d-flex justify-content-center">
         <div class="col-md-4 rounded bg-light-blue border border-dark h-50">
             <h2 class="text-light text-center mt-4 mb-4">Profile Search</h2>
-            <input id="search" autocomplete="off" class="w-100 p-1 border border-dark" placeholder="Search for profile..." oninput="getProfiles()" type="text" size="25" name="profile" />
+            <input id="search" autocomplete="off" class="w-100 p-1 border border-dark" placeholder="Search for profile..." oninput="hideProfiles()" type="text" size="25" name="profile" />
             <ul id="profile-list" class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
                 {% if result_list %}
                     {% for user in result_list %}
-                        <li><a href="{% url 'photocapsule:profile-results' user.username %}">{{ user.username }}</a></li>
+                        <li class="profile-link"><a class="link-dark" href="{% url 'photocapsule:profile-results' user.username %}">{{ user.username }}</a></li>
                     {% endfor %}
+                        <li id="no-profiles" hidden>No Profiles Found!</li>
                 {% else %}
                     <li>No Profiles Found!</li>
                 {% endif %}

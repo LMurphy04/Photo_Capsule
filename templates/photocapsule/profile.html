@@ -34,16 +34,21 @@
         </div>
         <div class="col-md-6 mx-3 pb-2 rounded bg-light-blue border border-dark">
             <h2 class="text-light text-center mt-4 mb-4">Photos</h2>
-            <div id="photoContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
+            <div id="photosContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
                 {% if photos %}
                     {% for photo in photos %}
-                    <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
-                    <div class="p-2">
-                        <div class="row"><p class="text-start col mb-0">{{ photo.title }}</p><p class="text-end col mb-0">{{ photo.likes }}♥</p></div>
-                        <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
-                        <p>Author: {{ photo.userID.username }}</p>
+                    <div data-likes="{{ photo.likes }}" data-upload="{{ photo.uploadDate.timestamp }}" class="photoBlock">
+                        <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
+                            <div class="p-2">
+                                <div class="row"><p class="text-start col mb-0">{{ photo.title }}</p><p class="text-end col mb-0">{{ photo.likes }}♥</p></div>
+                                <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
+                                <p>Author: {{ photo.userID.username }}</p>
+                            </div>
+                            {% if not forloop.last %}
+                                <hr/>
+                            {% endif %}
+                        </a>
                     </div>
-                    </a>
                     {% endfor %}
                 {% else %}
                     <p class="px-2 mb-0">No photos.</p>
@@ -53,9 +58,9 @@
         <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
             <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
             <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
-                <input onclick="sortPhotos('recent')" type="radio" id="recent" name="sort" value="recent" checked>
+                <input onclick="sortPhotos('data-upload')" type="radio" id="recent" name="sort" value="recent" checked>
                 <label for="recent">RECENT</label><br>
-                <input onclick="sortPhotos('mostLiked')" type="radio" id="mostLiked" name="sort" value="mostLiked">
+                <input onclick="sortPhotos('data-likes')" type="radio" id="mostLiked" name="sort" value="mostLiked">
                 <label for="mostLiked">MOST LIKED</label>
             </ul>
         </div>
