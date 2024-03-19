@@ -93,7 +93,7 @@ $('#sort-options').change(function() {
 });
 
 // Userlike
-<button class="like-btn" data-id="{{ photo.id }}">like</button>
+//<button class="like-btn" data-id="{{ photo.id }}">like</button>
 document.addEventListener('DOMContentLoaded', function () {
     var likeBtns = document.querySelectorAll('.like-btn');
     likeBtns.forEach(function(btn) {
