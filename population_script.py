@@ -18,7 +18,7 @@ def populate():
         {'username': 'Snap_King', 'email': 'paul7gerrard@gmail.com', 'password': 'y8uLkn90', 'profile_picture': 'profile_pictures/sunset.jpg'},
         {'username': '1950BlackAndWhite', 'email': 'oldschool@gmail.com', 'password': 'back1nMyDay', 'profile_picture': 'profile_pictures/default.png'},  
         {'username': 'ScotlandScenery', 'email': 'visitscotland@gmail.com', 'password': 'scot1andfor3v3r', 'profile_picture': 'profile_pictures/scotlandFlag.png'},
-        {'username': 'BritannyMcGill', 'email': 'runningFanatic@yahoo.com', 'password': 'sp33d0fs0und', 'profile_picture': 'profile_pictures/flowerDog.png'},
+        {'username': 'BritannyMcGill', 'email': 'runningFanatic@yahoo.com', 'password': 'sp33d0fs0und', 'profile_picture': 'profile_pictures/flowerDog.jpg'},
     ]
     
     categories_data = [

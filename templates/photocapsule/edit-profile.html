@@ -6,11 +6,16 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Edit Profile</h1>
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{ user_form.as_p }}
-        {{ profile_form.as_p }}
-        <button type="submit">Update Profile</button>
-    </form>
+<div class="container p-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 rounded bg-light-blue border border-dark">
+            <h1 class="text-light text-center mt-4 mb-4">Edit Profile</h1>
+            <form class="text-light mb-4" method="post" action=".">
+                {% csrf_token %}
+                {{ user_form.as_p }}
+                <button type="submit">Update Profile</button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

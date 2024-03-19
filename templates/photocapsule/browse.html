@@ -10,25 +10,30 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Browse</h1>
-    <div>
-        <h2>Profile Search</h2>
-        <input id="search" oninput="getProfiles()" type="text" size="40" name="profile" />
-        {% if result_list %}
-            <h2>Profiles</h2>
-            <ul id="profile-list">
-                {% for user in result_list %}
-                    <li><a href="{% url 'photocapsule:profile-results' user.username %}">{{ user.username }}</a></li>
-                {% endfor %}
+<h1 class="text-center pt-3">Browse</h1>
+<div class="container p-5 pt-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 rounded bg-light-blue border border-dark h-50">
+            <h2 class="text-light text-center mt-4 mb-4">Profile Search</h2>
+            <input id="search" autocomplete="off" class="w-100 p-1 border border-dark" placeholder="Search for profile..." oninput="hideProfiles()" type="text" size="25" name="profile" />
+            <ul id="profile-list" class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
+                {% if result_list %}
+                    {% for user in result_list %}
+                        <li class="profile-link"><a class="link-dark" href="{% url 'photocapsule:profile-results' user.username %}">{{ user.username }}</a></li>
+                    {% endfor %}
+                        <li id="no-profiles" hidden>No Profiles Found!</li>
+                {% else %}
+                    <li>No Profiles Found!</li>
+                {% endif %}
             </ul>
-        {% endif %}
-    </div>
-    <div>
-        <h2>Category Search</h2>
-        <ul>
+        </div>
+        <div class="col-md-2 mx-3 pb-2 rounded bg-light-blue border border-dark">
+            <h2 class="text-light text-center mt-4 mb-4">Category</h2>
+            <a class="btn bg-blue text-white text-start border border-dark w-100 mb-1" href="{% url 'photocapsule:category-results' 'All Categories' %}"><u>All Categories</u></a>
             {% for category in categories %}
-                <li><a href="{% url 'photocapsule:category-results' category.categoryName %}">{{ category.categoryName }}</a></li>
+                <a class="btn btn-light text-start border border-dark w-100 mb-1" href="{% url 'photocapsule:category-results' category.categoryName %}"><u>{{ category.categoryName }}</u></a>
             {% endfor %}
-        </ul>
+        </div>
     </div>
+</div>
 {% endblock %}

@@ -35,31 +35,27 @@ def browse(request):
 
         #create list of profiles to display
         profile_http = ""
-        for user in result_list:
-            profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
+        if len(result_list) == 0:
+            profile_http += '<li>No Profiles Found!</li>'
+        else:
+            for user in result_list:
+                profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
 
         return HttpResponse(profile_http)
     else:
         result_list = User.objects.filter()
         return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
 
-def profileResults(request, userPage):
-    context_dict = {}
-    try:
-        userPage = User.objects.get(username=userPage)
-        context_dict['userPage'] = userPage
-        context_dict['photos'] = Photo.objects.filter(userID=userPage)
-    except User.DoesNotExist:
-        context_dict['userPage'] = None
-        context_dict['photos'] = None
-    return render(request, 'photocapsule/profile.html', context=context_dict)
-
 def categoryResults(request, category):
     context_dict = {}
     try:
-        category = Category.objects.get(categoryName=category)
-        context_dict['category'] = category
-        context_dict['photos'] = Photo.objects.filter(categoryphoto__categoryID=category)
+        if category == 'All Categories':
+            context_dict['category'] = "All"
+            context_dict['photos'] = Photo.objects.order_by('-uploadDate')
+        else:
+            category = Category.objects.get(categoryName=category)
+            context_dict['category'] = category
+            context_dict['photos'] = Photo.objects.filter(categoryphoto__categoryID=category).order_by('-uploadDate')        
     except Category.DoesNotExist:
         context_dict['category'] = None
         context_dict['photos'] = None
@@ -70,7 +66,7 @@ def profile(request, userPage):
     try:
         userPage = User.objects.get(username=userPage)
         context_dict['userPage'] = userPage
-        context_dict['photos'] = Photo.objects.filter(userID=userPage)
+        context_dict['photos'] = Photo.objects.filter(userID=userPage).order_by('-uploadDate')        
     except User.DoesNotExist:
         context_dict['userPage'] = None
         context_dict['photos'] = None
