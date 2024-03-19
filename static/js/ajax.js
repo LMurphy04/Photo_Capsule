@@ -1,18 +1,18 @@
 // CODE IS REDUNDANT FOR NOW, KEEPING AS MIGHT REUSE POST LATER FOR LIKES AND COMMENTS
-function getProfiles() {
-    var xhttp = new	XMLHttpRequest();	
-    xhttp.onreadystatechange = function() {	
-        if (this.readyState	== 4 &&	this.status	== 200) {	
-            document.getElementById("profile-list").innerHTML = this.responseText;
-        }
-    };
-    var search = document.getElementById("search").value;
-    xhttp.open("POST","",true);
-    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhttp.send("profile="+search);
-}
+// function getProfiles() {
+//     var xhttp = new	XMLHttpRequest();	
+//     xhttp.onreadystatechange = function() {	
+//         if (this.readyState	== 4 &&	this.status	== 200) {	
+//             document.getElementById("profile-list").innerHTML = this.responseText;
+//         }
+//     };
+//     var search = document.getElementById("search").value;
+//     xhttp.open("POST","",true);
+//     xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+//     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//     xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+//     xhttp.send("profile="+search);
+// }
 
 function sortPhotos(type) {
     const photoBlocks = Array.from(document.getElementsByClassName("photoBlock"));
@@ -65,32 +65,32 @@ $('#comment-form').submit(function(e) {
 });
 
 // Search profile
-$('#search-input').keyup(function() {
-    $.ajax({
-        type: 'GET',
-        url: '/search_profiles/', 
-        data: {
-            'search_term': $(this).val() 
-        },
-        success: function(response) {
-            $('#profiles-list').html(response.profiles_html);
-        }
-    });
-});
+// $('#search-input').keyup(function() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/search_profiles/', 
+//         data: {
+//             'search_term': $(this).val() 
+//         },
+//         success: function(response) {
+//             $('#profiles-list').html(response.profiles_html);
+//         }
+//     });
+// });
 
 //Add sorting function
-$('#sort-options').change(function() {
-    $.ajax({
-        type: 'GET',
-        url: '/sort_results/', 
-        data: {
-            'sort_by': $(this).val() 
-        },
-        success: function(response) {
-            $('#results-list').html(response.results_html);
-        }
-    });
-});
+// $('#sort-options').change(function() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/sort_results/', 
+//         data: {
+//             'sort_by': $(this).val() 
+//         },
+//         success: function(response) {
+//             $('#results-list').html(response.results_html);
+//         }
+//     });
+// });
 
 // Userlike
 //<button class="like-btn" data-id="{{ photo.id }}">like</button>
@@ -104,7 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-                    'X-CSRFToken': '{{ csrf_token }}',
+                    'X-CSRFToken': csrf_token,
                 },
                 body: 'photo_id=' + photoId + '&action=' + action
             })

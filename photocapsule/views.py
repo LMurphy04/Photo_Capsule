@@ -110,17 +110,17 @@ def add_comment(request, photo_id):
         return JsonResponse({'comment_html': comment_html})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def search_profiles(request):
-    search_term = request.GET.get('search_term', '')
-    profiles = UserProfile.objects.filter(user__username__icontains=search_term)
-    profiles_html = render_to_string('includes/profiles_list.html', {'profiles': profiles}, request=request)
-    return JsonResponse({'profiles_html': profiles_html})
+# def search_profiles(request):
+#     search_term = request.GET.get('search_term', '')
+#     profiles = UserProfile.objects.filter(user__username__icontains=search_term)
+#     profiles_html = render_to_string('includes/profiles_list.html', {'profiles': profiles}, request=request)
+#     return JsonResponse({'profiles_html': profiles_html})
 
-def sort_results(request):
-    sort_by = request.GET.get('sort_by', 'default_sort_field')
-    results = MyModel.objects.all().order_by(sort_by)
-    results_html = render_to_string('includes/results_list.html', {'results': results}, request=request)
-    return JsonResponse({'results_html': results_html})
+# def sort_results(request):
+#     sort_by = request.GET.get('sort_by', 'default_sort_field')
+#     results = MyModel.objects.all().order_by(sort_by)
+#     results_html = render_to_string('includes/results_list.html', {'results': results}, request=request)
+#     return JsonResponse({'results_html': results_html})
 
 @require_POST
 @login_required
