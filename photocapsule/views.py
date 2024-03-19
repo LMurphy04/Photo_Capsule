@@ -7,9 +7,9 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-from photocapsule.models import User, Photo, Category
+from photocapsule.models import User, Photo, Category, CategoryPhoto
 from django.contrib import messages
-from photocapsule.forms import UserForm, ProfileForm
+from photocapsule.forms import UserForm, ProfileForm, PhotoForm
 from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -30,7 +30,22 @@ def index(request):
 
 @login_required
 def upload(request):
-    return render(request, 'photocapsule/upload.html', context={})
+    if request.method == 'POST':
+        form = PhotoForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            photo = form.save(commit=False)
+            photo.userID = request.user
+            selected_categories = request.POST.getlist('categories')
+            photo.save()
+            for category_id in selected_categories:
+                category = Category.objects.get(pk=category_id)
+                CategoryPhoto.objects.create(photoID=photo, categoryID=category)
+            return render(request, 'photocapsule/index.html')
+    else:
+        initial_data = {'userID': request.user.pk}
+        form = PhotoForm(initial=initial_data)
+        
+    return render(request, 'photocapsule/upload.html', context={'form' : form})
 
 def browse(request):
     return render(request, 'photocapsule/browse.html', context={'result_list': User.objects.all(), 'categories': Category.objects.all()})
@@ -61,6 +76,8 @@ def profile(request, userPage):
         context_dict['photos'] = None
     return render(request, 'photocapsule/profile.html', context=context_dict)
 
+
+
 @login_required
 def editProfile(request, userPage):
     if request.method == 'POST':
@@ -70,7 +87,6 @@ def editProfile(request, userPage):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            messages.success(request, 'Your profile has been updated!')
             return render(request, 'photocapsule/index.html')
 
     else:

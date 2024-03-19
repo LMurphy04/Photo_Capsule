@@ -12,6 +12,7 @@
             <h1 class="text-light text-center mt-4 mb-4">Edit Profile</h1>
             <form class="text-light mb-4" method="post" action=".">
                 {% csrf_token %}
+                {% csrf_token %}
                 {{ user_form.as_p }}
                 {{ profile_form.as_p }}
                 <button type="submit">Update Profile</button>
