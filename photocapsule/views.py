@@ -24,8 +24,8 @@ def create_user_profile(sender, user, request, **kwargs):
 
 def index(request):
     context_dict = {}
-    context_dict['recent'] = Photo.objects.all().order_by('-uploadDate')[:4]
-    context_dict['likes'] = Photo.objects.filter(uploadDate__gte = datetime.now() - timedelta(days=1)).order_by('-likes')[:4]
+    context_dict['recent'] = Photo.objects.all().order_by('-uploadDate')[:3]
+    context_dict['likes'] = Photo.objects.filter(uploadDate__gte = datetime.now() - timedelta(days=1)).order_by('-likes')[:3]
     return render(request, 'photocapsule/index.html', context=context_dict)
 
 @login_required
@@ -33,23 +33,7 @@ def upload(request):
     return render(request, 'photocapsule/upload.html', context={})
 
 def browse(request):
-    result_list = []
-    if request.is_ajax():
-        profile = request.POST['profile'].strip()
-        result_list = User.objects.filter(username__contains=profile)
-
-        #create list of profiles to display
-        profile_http = ""
-        if len(result_list) == 0:
-            profile_http += '<li>No Profiles Found!</li>'
-        else:
-            for user in result_list:
-                profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
-
-        return HttpResponse(profile_http)
-    else:
-        result_list = User.objects.filter()
-        return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
+    return render(request, 'photocapsule/browse.html', context={'result_list': User.objects.all(), 'categories': Category.objects.all()})
 
 def categoryResults(request, category):
     context_dict = {}
