@@ -37,10 +37,14 @@ def upload(request):
             photo.userID = request.user
             selected_categories = request.POST.getlist('categories')
             photo.save()
-            for category_id in selected_categories:
-                category = Category.objects.get(pk=category_id)
+            if len(selected_categories) == 0:
+                category = Category.objects.get(categoryName="Miscellaneous")
                 CategoryPhoto.objects.create(photoID=photo, categoryID=category)
-            return render(request, 'photocapsule/index.html')
+            else:
+                for category_id in selected_categories:
+                    category = Category.objects.get(pk=category_id)
+                    CategoryPhoto.objects.create(photoID=photo, categoryID=category)
+            return redirect(reverse('photocapsule:index'))
     else:
         initial_data = {'userID': request.user.pk}
         form = PhotoForm(initial=initial_data)
