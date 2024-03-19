@@ -46,3 +46,76 @@ function hideProfiles() {
         }
     });
 }
+
+// Add comments
+$('#comment-form').submit(function(e) {
+    e.preventDefault(); 
+    $.ajax({
+        type: $(this).attr('method'), 
+        url: $(this).attr('action'), 
+        data: $(this).serialize(), 
+        success: function(response) {
+            $('#comments-section').append(response.comment_html);
+            $('#id_comment_text').val('');
+        },
+        error: function(xhr, errmsg, err) {
+            console.log(xhr.status + ": " + xhr.responseText);
+        }
+    });
+});
+
+// Search profile
+$('#search-input').keyup(function() {
+    $.ajax({
+        type: 'GET',
+        url: '/search_profiles/', 
+        data: {
+            'search_term': $(this).val() 
+        },
+        success: function(response) {
+            $('#profiles-list').html(response.profiles_html);
+        }
+    });
+});
+
+//Add sorting function
+$('#sort-options').change(function() {
+    $.ajax({
+        type: 'GET',
+        url: '/sort_results/', 
+        data: {
+            'sort_by': $(this).val() 
+        },
+        success: function(response) {
+            $('#results-list').html(response.results_html);
+        }
+    });
+});
+
+// Userlike
+<button class="like-btn" data-id="{{ photo.id }}">like</button>
+document.addEventListener('DOMContentLoaded', function () {
+    var likeBtns = document.querySelectorAll('.like-btn');
+    likeBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var photoId = this.getAttribute('data-id');
+            var action = this.textContent.trim().toLowerCase() === 'like' ? 'like' : 'unlike';
+            fetch("{% url 'like_photo' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+                body: 'photo_id=' + photoId + '&action=' + action
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'ok') {
+                    
+                    this.textContent = action === 'like' ? 'unlike' : 'like';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+});

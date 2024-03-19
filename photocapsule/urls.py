@@ -12,4 +12,8 @@ urlpatterns = [
     path('profile/<str:userPage>', views.profile, name='profile'),
     path('profile/<str:userPage>/edit', views.editProfile, name='edit-profile'),
     path('photos/<str:userPage>/<str:photo>', views.photo, name='photo'),
+    path('like_photo/', views.like_photo, name='like_photo'),
+    path('comment/photo/<int:photo_id>/', views.add_comment, name='add_comment'),
+    path('search/profiles/', views.search_profiles, name='search_profiles'),
+    path('sort/photos/', views.sort_photos, name='sort_photos'),
 ]
