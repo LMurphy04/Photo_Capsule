@@ -33,10 +33,9 @@ function addComment() {
             if (response["status"] == "success") {
                 commentBox.value = '';
                 const commentContainer = document.getElementById("commentContainer");
-                console.log(commentContainer.innerHTML)
-                if (commentContainer.getAttribute("data-entry")=="True") {
+                if (commentContainer.getAttribute("data-empty")=="True") {
                     commentContainer.innerHTML = '';
-                    commentContainer.setAttribute("data-entry",False)
+                    commentContainer.setAttribute("data-empty","False");
                 }
                 commentContainer.innerHTML = response['comment'] + commentContainer.innerHTML;
             }
@@ -44,11 +43,13 @@ function addComment() {
     };
     const commentBox = document.getElementById("comment");
     const comment = commentBox.value;
-    xhttp.open("POST","/photocapsule/comment/",true);
-    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-    xhttp.send("comment="+comment+"&photo="+photo+"&user="+user);
+    if (comment != '') {
+        xhttp.open("POST","/photocapsule/comment/",true);
+        xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+        xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+        xhttp.send("comment="+comment+"&photo="+photo+"&user="+user);
+    }
 }
 
 function sortPhotos(type) {
