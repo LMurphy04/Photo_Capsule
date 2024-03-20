@@ -27,8 +27,8 @@
                     <p class="mb-1"><b>{{ photo.userID.username }}</b></p>
                     <hr/>
                     <div class="row">
-                        <div class="mb-0 col-4"><b>Likes:</b><p id="likeCount" class="col">{{ photo.likes }}</p></div>
-                        <div class="col-8"><b>Upload Date:</b><p>{{ photo.uploadDate|date:'d-m-Y' }}</p></div>
+                        <div class="mb-0 col-5"><b>Likes:</b><p id="likeCount" class="col">{{ photo.likes }}</p></div>
+                        <div class="col-7"><b>Upload Date:</b><p>{{ photo.uploadDate|date:'d-m-Y' }}</p></div>
                     </div>
                     <hr/>
                     <p class="mb-0"><b>Description:</b><br/>{{ photo.description }}</p>
@@ -44,7 +44,7 @@
             <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
             <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
             <hr>
-            <div id="commentContainer">
+            <div id="commentContainer" class="p-2 overflow-x-auto" style="max-height:20vh">
                 {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
                     <div class="p-1">
                         <div class="row fw-bold">
