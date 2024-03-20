@@ -18,13 +18,30 @@ function like_unlike(button) {
         }
     };
     const type = button.getAttribute("data-like-or-unlike");
-    const photo = button.getAttribute("data-photo");
-    const user = button.getAttribute("data-current-user");
     xhttp.open("POST","/photocapsule/like/",true);
     xhttp.setRequestHeader("X-CSRFToken", csrftoken);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
     xhttp.send("type="+type+"&photo="+photo+"&user="+user);
+}
+
+function addComment() {
+    var xhttp = new	XMLHttpRequest();	
+    xhttp.onreadystatechange = function() {	
+        if (this.readyState	== 4 &&	this.status	== 200) {
+            const response = JSON.parse(this.responseText);
+            if (response["status"] == "success") {
+                commentBox.value = '';
+            }
+        }
+    };
+    const commentBox = document.getElementById("comment");
+    const comment = commentBox.value;
+    xhttp.open("POST","/photocapsule/comment/",true);
+    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhttp.send("comment="+comment+"&photo="+photo+"&user="+user);
 }
 
 function sortPhotos(type) {

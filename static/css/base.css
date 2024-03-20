@@ -9,3 +9,7 @@
 .bg-light-blue {
     background-color: #8686fe;
 }
+
+textarea {
+    resize: none;
+}

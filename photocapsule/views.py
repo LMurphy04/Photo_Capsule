@@ -7,7 +7,7 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-from photocapsule.models import User, Photo, Category, CategoryPhoto, UserLike
+from photocapsule.models import User, Photo, Category, CategoryPhoto, UserLike, Comment
 from django.contrib import messages
 from photocapsule.forms import UserForm, ProfileForm, PhotoForm
 from datetime import datetime, timedelta
@@ -135,6 +135,15 @@ def like(request):
             UserLike.objects.get(photoID=photo, userID=user).delete()
             setattr(photo, 'likes', photo.likes-1) 
             photo.save()
+        return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "error"})
+
+def addComment(request):
+    if request.method == "POST" and request.is_ajax():
+        comment = request.POST.get('comment')
+        user = User.objects.get(username=request.POST.get('user'))
+        photo = Photo.objects.get(id=request.POST.get('photo'))
+        Comment.objects.create(content=comment,photoID=photo,userID=user)
         return JsonResponse({"status": "success"})
     return JsonResponse({"status": "error"})
 

@@ -8,12 +8,16 @@
 
 {% block script_block %}
     <script src="{% static 'js/ajax.js' %}" type="text/javascript"></script>
+    <script>
+        var photo = '{{ photo.id }}';
+        var user = '{{ user }}';
+    </script>
 {% endblock %}
 
 {% block body_block %}
 <div class="row d-flex justify-content-center mt-4">
-    <div class="col-md-4 rounded bg-light-blue border border-dark h-50 p-2 mx-2">
-        <div id="photosContainer" class="rounded bg-light border border-dark p-3">
+    <div class="col-md-4 rounded bg-light-blue border border-dark h-50 p-2 mx-4 mb-2">
+        <div class="rounded bg-light border border-dark p-3">
         {% if photo %}
             <div class="row">
                 <div class="col-md-4">
@@ -34,50 +38,35 @@
             <img class="img-fluid rounded border border-dark" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
         {% endif %}
     </div>
-        <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
-            {% if userPage %}
-                <li><b>{{ userPage.username }}</b></li>
-                <li><i>{{ userPage.email }}</i></li>
-                {% if userPage.username == user.username %}
-                    <li><a href="{% url 'photocapsule:edit-profile' user.username %}">Edit Profile</a></li>
-                {% endif %}
-            {% else %}
-                User not found.
-            {% endif %}
-        </ul>
+    <div class="rounded bg-light border border-dark p-3 mt-2">
+        <div>
+            <b>Comments:</b>
+            <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
+            <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
+            <hr>
+            <div id="commentContainer">
+                {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
+                    <div class="p-1">
+                        <div class="row fw-bold">
+                            <p class="col-8 mb-0">{{ comment.userID.username }}</p>
+                            <p class="col-4 text-end mb-0">{{ comment.uploadDate|date:'d-m-Y' }}</p>
+                        </div>
+                        <p class="mb-1">{{ comment.content }}</p>
+                    </div>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-    <div class="col-md-6 p-2 rounded bg-light-blue border border-dark">
+    </div>
+    <div class="col-md-6 p-2 rounded h-50 bg-light-blue border border-dark mb-2">
         <div id="photosContainer" class="rounded bg-light border border-dark p-3">
                 <div class="photoBlock">
-                            <div class="row mb-2"><p class="text-start col mb-0">{{ photo.title }}</p><div class="col">{% if user.is_authenticated %}<button id="likeButton" data-like-or-unlike="{% hasLikedPhoto user=user photo=photo %}" data-photo="{{ photo.id }}" data-current-user="{{ user }}" onclick=like_unlike(this) class="btn btn-light border border-dark p-1 float-end">{% hasLikedPhoto user=user photo=photo %} ♥</button>{% else %}<p class="float-end">Log In to Like!</p>{% endif %}</div></div>
+                            <div class="row mb-2"><p class="text-start col mb-0">{{ photo.title }}</p><div class="col">{% if user.is_authenticated %}<button id="likeButton" data-like-or-unlike="{% hasLikedPhoto user=user photo=photo %}" onclick=like_unlike(this) class="btn btn-light border border-dark p-1 float-end">{% hasLikedPhoto user=user photo=photo %} ♥</button>{% else %}<p class="float-end">Log In to Like!</p>{% endif %}</div></div>
                             <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
                 </div>
         </div>
     </div>
 </div>
-
-    <div>
-        {% if user.is_authenticated %}
-        <textarea rows="4" cols="50" placeholder="Type your comment here..." disabled></textarea>
-        <br>
-        <button disabled>Add Comment</button>
-        {% else %}
-        Log In to Comment!
-        {% endif %}
-    </div>
-
-    <div>
-        <h3>Comments:</h3>
-        <ul>
-            {% for comment in photo.comment_set.all %}
-                <li style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                    <p>{{ comment.content }}</p>
-                    <p>{{ comment.userID.username }}</p>
-                    <p>{{ comment.uploadDate }}</p>
-                </li>
-            {% empty %}
-                <li>No comments yet.</li>
-            {% endfor %}
-        </ul>
-    </div>
 {% endblock %}
