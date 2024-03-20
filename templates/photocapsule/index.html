@@ -9,7 +9,7 @@
     <h1 class="text-center pt-3">Homepage</h1>
     <div class="container-fluid px-5 pt-3">
         <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
-            <h2 class="col-2 text-light text-center">Recent</h2>
+            <div class="col-2 text-light text-center"><h2>Recent</h2><p>The latest photos on the website, click the photos for more details!</p></div>
             {% if recent %}
                 {% for photo in recent %}
                 <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">
@@ -23,7 +23,7 @@
     </div>
     <div class="container-fluid px-5 pt-3 pb-5">
         <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
-            <h2 class="col-2 text-light text-center">Trending</h2>
+            <div class="col-2 text-light text-center"><h2>Trending</h2><p>The most liked photos of the last 24hrs, click the photos for more details!</p></div>
             {% if likes %}
                 {% for photo in likes %}
                 <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">

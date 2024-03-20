@@ -13,3 +13,7 @@
 textarea {
     resize: none;
 }
+
+.commentBox {
+    max-height:20vh;
+}

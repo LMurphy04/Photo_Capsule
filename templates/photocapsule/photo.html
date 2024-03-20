@@ -41,10 +41,14 @@
     <div class="rounded bg-light border border-dark p-3 mt-2">
         <div>
             <b>Comments:</b>
+            {% if user.is_authenticated %}
             <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
             <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
+            {% else %}
+            <p>Log In to Comment!</p>
+            {% endif %}
             <hr>
-            <div id="commentContainer" class="p-2 overflow-x-auto" style="max-height:20vh">
+            <div id="commentContainer" class="p-2 overflow-auto commentBox">
                 {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
                     <div class="p-1">
                         <div class="row fw-bold">

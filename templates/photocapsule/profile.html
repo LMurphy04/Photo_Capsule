@@ -55,6 +55,7 @@
                 {% endif %}
             </div>
         </div>
+        {% if photos %}
         <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
             <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
             <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
@@ -64,6 +65,7 @@
                 <label for="mostLiked">MOST LIKED</label>
             </ul>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

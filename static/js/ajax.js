@@ -33,6 +33,10 @@ function addComment() {
             if (response["status"] == "success") {
                 commentBox.value = '';
                 const commentContainer = document.getElementById("commentContainer");
+                console.log(commentContainer.innerHTML)
+                if (commentContainer.innerHTML.includes("<p>No comments yet.</p>")) {
+                    commentContainer.innerHTML = '';
+                }
                 commentContainer.innerHTML = response['comment'] + commentContainer.innerHTML;
             }
         }
