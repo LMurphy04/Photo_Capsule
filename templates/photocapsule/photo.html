@@ -1,39 +1,72 @@
 {% extends 'photocapsule/base.html' %}
 {% load staticfiles %}
+{% load photocapsule_template_tags %}
 
 {% block title_block %}
     Photo Details
 {% endblock %}
 
+{% block script_block %}
+    <script src="{% static 'js/ajax.js' %}" type="text/javascript"></script>
+    <script>
+        var photo = '{{ photo.id }}';
+        var user = '{{ user }}';
+    </script>
+{% endblock %}
+
 {% block body_block %}
-    <p>{{ photo.title }}</p>
-    <p>{{ photo.userID.username }}</p>
-    <img id="photo" src="{{ photo.image.url }}" alt="Photo" />
-    <p>{{ photo.description }}</p>
-    <div>
-        <button disabled>Like</button>
-        <span id="likeCount">{{ photo.likes }}</span> Likes
+<div class="row d-flex justify-content-center mt-4">
+    <div class="col-md-4 rounded bg-light-blue border border-dark h-50 p-2 mx-4 mb-2">
+        <div class="rounded bg-light border border-dark p-3">
+        {% if photo %}
+            <div class="row">
+                <div class="col-md-4">
+                    <img class="img-fluid rounded border border-dark w-100 p-0" src="{{ photo.userID.userprofile.profilePicture.url }}" alt="Profile Picture" />
+                </div>
+                <div class="col">
+                    <p class="mb-1"><b>{{ photo.userID.username }}</b></p>
+                    <hr/>
+                    <div class="row">
+                        <div class="mb-0 col-5"><b>Likes:</b><p id="likeCount" class="col">{{ photo.likes }}</p></div>
+                        <div class="col-7"><b>Upload Date:</b><p>{{ photo.uploadDate|date:'d-m-Y' }}</p></div>
+                    </div>
+                    <hr/>
+                    <p class="mb-0"><b>Description:</b><br/>{{ photo.description }}</p>
+                </div>
+            </div>
+        {% else %}
+            <img class="img-fluid rounded border border-dark" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
+        {% endif %}
     </div>
-
-
-    <div>
-        <textarea rows="4" cols="50" placeholder="Type your comment here..." disabled></textarea>
-        <br>
-        <button disabled>Add Comment</button>
+    <div class="rounded bg-light border border-dark p-3 mt-2">
+        <div>
+            <b>Comments:</b>
+            <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
+            <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
+            <hr>
+            <div id="commentContainer" class="p-2 overflow-x-auto" style="max-height:20vh">
+                {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
+                    <div class="p-1">
+                        <div class="row fw-bold">
+                            <p class="col-8 mb-0">{{ comment.userID.username }}</p>
+                            <p class="col-4 text-end mb-0">{{ comment.uploadDate|date:'d-m-Y' }}</p>
+                        </div>
+                        <p class="mb-1">{{ comment.content }}</p>
+                    </div>
+                {% empty %}
+                    <p>No comments yet.</p>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-
-    <div>
-        <h3>Comments:</h3>
-        <ul>
-            {% for comment in photo.comment_set.all %}
-                <li style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
-                    <p>{{ comment.content }}</p>
-                    <p>{{ comment.userID.username }}</p>
-                    <p>{{ comment.uploadDate }}</p>
-                </li>
-            {% empty %}
-                <li>No comments yet.</li>
-            {% endfor %}
-        </ul>
     </div>
+    <div class="col-md-6 p-2 rounded h-50 bg-light-blue border border-dark mb-2">
+        <div id="photosContainer" class="rounded bg-light border border-dark p-3">
+                <div class="photoBlock">
+                            <div class="row mb-2"><p class="text-start col mb-0">{{ photo.title }}</p><div class="col">{% if user.is_authenticated %}<button id="likeButton" data-like-or-unlike="{% hasLikedPhoto user=user photo=photo %}" onclick=like_unlike(this) class="btn btn-light border border-dark p-1 float-end">{% hasLikedPhoto user=user photo=photo %} ♥</button>{% else %}<p class="float-end">Log In to Like!</p>{% endif %}</div></div>
+                            <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0 w-100" />
+                </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -7,7 +7,7 @@ from registration.signals import user_registered
 from django.contrib.auth.models import User
 from .models import UserProfile
 from django.contrib.auth.decorators import login_required
-from photocapsule.models import User, Photo, Category, CategoryPhoto
+from photocapsule.models import User, Photo, Category, CategoryPhoto, UserLike, Comment
 from django.contrib import messages
 from photocapsule.forms import UserForm, ProfileForm, PhotoForm
 from datetime import datetime, timedelta
@@ -100,7 +100,15 @@ def editProfile(request, userPage):
     return render(request, 'photocapsule/edit-profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
 def photo(request, userPage, photo):
-    return render(request, 'photocapsule/photo.html', context={'photo': Photo.objects.get(id=photo)})
+    context_dict = {}
+    try:
+        user = User.objects.get(username=userPage)
+        photo = Photo.objects.get(userID=user,id=photo)
+        context_dict['photo'] = photo
+    except:
+        context_dict['photo'] = None
+        context_dict['userLiked'] = None
+    return render(request, 'photocapsule/photo.html', context_dict)
 
 def add_comment(request, photo_id):
     if request.method == 'POST' and request.is_ajax():
@@ -113,6 +121,32 @@ def add_comment(request, photo_id):
         
         return JsonResponse({'comment_html': comment_html})
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+def like(request):
+    if request.method == "POST" and request.is_ajax():
+        like_or_dislike = request.POST.get('type')
+        user = User.objects.get(username=request.POST.get('user'))
+        photo = Photo.objects.get(id=request.POST.get('photo'))
+        if (like_or_dislike == "Like"):
+            UserLike.objects.create(photoID=photo, userID=user)
+            setattr(photo, 'likes', photo.likes+1) 
+            photo.save()
+        else:
+            UserLike.objects.get(photoID=photo, userID=user).delete()
+            setattr(photo, 'likes', photo.likes-1) 
+            photo.save()
+        return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "error"})
+
+def addComment(request):
+    if request.method == "POST" and request.is_ajax():
+        comment = request.POST.get('comment')
+        user = User.objects.get(username=request.POST.get('user'))
+        photo = Photo.objects.get(id=request.POST.get('photo'))
+        newComment = Comment.objects.create(content=comment,photoID=photo,userID=user)
+        comment_html = render_to_string('page_sections\comment.html', {'comment': newComment})
+        return JsonResponse({"status": "success", "comment": comment_html})
+    return JsonResponse({"status": "error"})
 
 # def search_profiles(request):
 #     search_term = request.GET.get('search_term', '')
