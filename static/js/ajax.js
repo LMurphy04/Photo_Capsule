@@ -34,8 +34,9 @@ function addComment() {
                 commentBox.value = '';
                 const commentContainer = document.getElementById("commentContainer");
                 console.log(commentContainer.innerHTML)
-                if (commentContainer.innerHTML.includes("<p>No comments yet.</p>")) {
+                if (commentContainer.getAttribute("data-entry")=="True") {
                     commentContainer.innerHTML = '';
+                    commentContainer.setAttribute("data-entry",False)
                 }
                 commentContainer.innerHTML = response['comment'] + commentContainer.innerHTML;
             }

@@ -17,3 +17,7 @@ textarea {
 .commentBox {
     max-height:20vh;
 }
+
+#profile-list {
+    max-height:50vh;
+}

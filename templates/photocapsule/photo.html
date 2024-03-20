@@ -24,14 +24,14 @@
                     <img class="img-fluid rounded border border-dark w-100 p-0" src="{{ photo.userID.userprofile.profilePicture.url }}" alt="Profile Picture" />
                 </div>
                 <div class="col">
-                    <p class="mb-1"><b>{{ photo.userID.username }}</b></p>
+                    <p class="mb-1"><a class="link-dark" href="{% url 'photocapsule:profile-results' photo.userID.username %}"><b>{{ photo.userID.username }}</b></a></p>
                     <hr/>
                     <div class="row">
                         <div class="mb-0 col-5"><b>Likes:</b><p id="likeCount" class="col">{{ photo.likes }}</p></div>
                         <div class="col-7"><b>Upload Date:</b><p>{{ photo.uploadDate|date:'d-m-Y' }}</p></div>
                     </div>
                     <hr/>
-                    <p class="mb-0"><b>Description:</b><br/>{{ photo.description }}</p>
+                    <p class="mb-0"><b>Description:</b><br/>{% if photo.description %}{{ photo.description }}{% else %}No Description.{% endif %}</p>
                 </div>
             </div>
         {% else %}
@@ -48,7 +48,7 @@
             <p>Log In to Comment!</p>
             {% endif %}
             <hr>
-            <div id="commentContainer" class="p-2 overflow-auto commentBox">
+            <div id="commentContainer" data-empty="{% if photo.comment_set.all|length == 0 %}True{% else %}False{% endif %}" class="p-2 overflow-auto commentBox">
                 {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
                     <div class="p-1">
                         <div class="row fw-bold">
