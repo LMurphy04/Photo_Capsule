@@ -24,6 +24,7 @@ class PhotoForm(forms.ModelForm):
         super(PhotoForm, self).__init__(*args, **kwargs)
         self.fields['likes'].widget = forms.HiddenInput()
         self.fields['userID'].widget = forms.HiddenInput()
+        self.fields['description'].required = False
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:

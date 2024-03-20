@@ -24,8 +24,8 @@ def create_user_profile(sender, user, request, **kwargs):
 
 def index(request):
     context_dict = {}
-    context_dict['recent'] = Photo.objects.all().order_by('-uploadDate')[:4]
-    context_dict['likes'] = Photo.objects.filter(uploadDate__gte = datetime.now() - timedelta(days=1)).order_by('-likes')[:4]
+    context_dict['recent'] = Photo.objects.all().order_by('-uploadDate')[:3]
+    context_dict['likes'] = Photo.objects.filter(uploadDate__gte = datetime.now() - timedelta(days=1)).order_by('-likes')[:3]
     return render(request, 'photocapsule/index.html', context=context_dict)
 
 @login_required
@@ -37,10 +37,14 @@ def upload(request):
             photo.userID = request.user
             selected_categories = request.POST.getlist('categories')
             photo.save()
-            for category_id in selected_categories:
-                category = Category.objects.get(pk=category_id)
+            if len(selected_categories) == 0:
+                category = Category.objects.get(categoryName="Miscellaneous")
                 CategoryPhoto.objects.create(photoID=photo, categoryID=category)
-            return render(request, 'photocapsule/index.html')
+            else:
+                for category_id in selected_categories:
+                    category = Category.objects.get(pk=category_id)
+                    CategoryPhoto.objects.create(photoID=photo, categoryID=category)
+            return redirect(reverse('photocapsule:index'))
     else:
         initial_data = {'userID': request.user.pk}
         form = PhotoForm(initial=initial_data)
@@ -48,23 +52,7 @@ def upload(request):
     return render(request, 'photocapsule/upload.html', context={'form' : form})
 
 def browse(request):
-    result_list = []
-    if request.is_ajax():
-        profile = request.POST['profile'].strip()
-        result_list = User.objects.filter(username__contains=profile)
-
-        #create list of profiles to display
-        profile_http = ""
-        if len(result_list) == 0:
-            profile_http += '<li>No Profiles Found!</li>'
-        else:
-            for user in result_list:
-                profile_http += '<li><a href="/photocapsule/browse/profile/'+user.username+'">'+user.username+'</a></li>'
-
-        return HttpResponse(profile_http)
-    else:
-        result_list = User.objects.filter()
-        return render(request, 'photocapsule/browse.html', context={'result_list': result_list, 'categories': Category.objects.all()})
+    return render(request, 'photocapsule/browse.html', context={'result_list': User.objects.all(), 'categories': Category.objects.all()})
 
 def categoryResults(request, category):
     context_dict = {}
@@ -126,17 +114,17 @@ def add_comment(request, photo_id):
         return JsonResponse({'comment_html': comment_html})
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def search_profiles(request):
-    search_term = request.GET.get('search_term', '')
-    profiles = UserProfile.objects.filter(user__username__icontains=search_term)
-    profiles_html = render_to_string('includes/profiles_list.html', {'profiles': profiles}, request=request)
-    return JsonResponse({'profiles_html': profiles_html})
+# def search_profiles(request):
+#     search_term = request.GET.get('search_term', '')
+#     profiles = UserProfile.objects.filter(user__username__icontains=search_term)
+#     profiles_html = render_to_string('includes/profiles_list.html', {'profiles': profiles}, request=request)
+#     return JsonResponse({'profiles_html': profiles_html})
 
-def sort_results(request):
-    sort_by = request.GET.get('sort_by', 'default_sort_field')
-    results = MyModel.objects.all().order_by(sort_by)
-    results_html = render_to_string('includes/results_list.html', {'results': results}, request=request)
-    return JsonResponse({'results_html': results_html})
+# def sort_results(request):
+#     sort_by = request.GET.get('sort_by', 'default_sort_field')
+#     results = MyModel.objects.all().order_by(sort_by)
+#     results_html = render_to_string('includes/results_list.html', {'results': results}, request=request)
+#     return JsonResponse({'results_html': results_html})
 
 @require_POST
 @login_required

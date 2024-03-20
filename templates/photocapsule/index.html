@@ -9,11 +9,11 @@
     <h1 class="text-center pt-3">Homepage</h1>
     <div class="container-fluid px-5 pt-3">
         <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
-            <h2 class="col text-light text-center">Recent</h2>
+            <h2 class="col-2 text-light text-center">Recent</h2>
             {% if recent %}
                 {% for photo in recent %}
                 <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">
-                    <img class="home-photo border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+                    <img class="w-100 border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
                 </a>
                 {% endfor %}
             {% else %}
@@ -23,11 +23,11 @@
     </div>
     <div class="container-fluid px-5 pt-3 pb-5">
         <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
-            <h2 class="col text-light text-center">Trending</h2>
+            <h2 class="col-2 text-light text-center">Trending</h2>
             {% if likes %}
                 {% for photo in likes %}
                 <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">
-                    <img class="home-photo border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+                    <img class="w-100 border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
                 </a>
                 {% endfor %}
             {% else %}
