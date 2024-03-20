@@ -36,7 +36,6 @@ class Comment(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=250)
     uploadDate = models.DateTimeField(auto_now_add=True)
-    #unsure of how it will be used so can be edited later
     def __str__(self):
         return str(self.userID) + ' ' + str(self.photoID) + ' ' + str(self.uploadDate)
     
