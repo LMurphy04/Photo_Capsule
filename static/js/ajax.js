@@ -32,6 +32,8 @@ function addComment() {
             const response = JSON.parse(this.responseText);
             if (response["status"] == "success") {
                 commentBox.value = '';
+                const commentContainer = document.getElementById("commentContainer");
+                commentContainer.innerHTML = response['comment'] + commentContainer.innerHTML;
             }
         }
     };
