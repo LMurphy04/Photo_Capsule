@@ -1,18 +1,31 @@
-// CODE IS REDUNDANT FOR NOW, KEEPING AS MIGHT REUSE POST LATER FOR LIKES AND COMMENTS
-// function getProfiles() {
-//     var xhttp = new	XMLHttpRequest();	
-//     xhttp.onreadystatechange = function() {	
-//         if (this.readyState	== 4 &&	this.status	== 200) {	
-//             document.getElementById("profile-list").innerHTML = this.responseText;
-//         }
-//     };
-//     var search = document.getElementById("search").value;
-//     xhttp.open("POST","",true);
-//     xhttp.setRequestHeader("X-CSRFToken", csrftoken);
-//     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//     xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
-//     xhttp.send("profile="+search);
-// }
+function like_unlike(button) {
+    var xhttp = new	XMLHttpRequest();	
+    xhttp.onreadystatechange = function() {	
+        if (this.readyState	== 4 &&	this.status	== 200) {
+            const response = JSON.parse(this.responseText);
+            if (response["status"] == "success") {
+                const likeCount = document.getElementById("likeCount");
+                if (type == "Like") {
+                    likeCount.innerHTML = parseInt(likeCount.innerHTML) + 1
+                    button.setAttribute("data-like-or-unlike", "Unlike")
+                    button.innerHTML = "Unlike ♥"
+                } else if (type == "Unlike") {
+                    likeCount.innerHTML = parseInt(likeCount.innerHTML) - 1
+                    button.setAttribute("data-like-or-unlike", "Like")
+                    button.innerHTML = "Like ♥"
+                }
+            }
+        }
+    };
+    const type = button.getAttribute("data-like-or-unlike");
+    const photo = button.getAttribute("data-photo");
+    const user = button.getAttribute("data-current-user");
+    xhttp.open("POST","/photocapsule/like/",true);
+    xhttp.setRequestHeader("X-CSRFToken", csrftoken);
+    xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhttp.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+    xhttp.send("type="+type+"&photo="+photo+"&user="+user);
+}
 
 function sortPhotos(type) {
     const photoBlocks = Array.from(document.getElementsByClassName("photoBlock"));
