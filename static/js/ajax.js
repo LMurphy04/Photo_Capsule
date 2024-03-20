@@ -43,7 +43,7 @@ function addComment() {
     };
     const commentBox = document.getElementById("comment");
     const comment = commentBox.value;
-    if (comment != '') {
+    if (comment.trim() != '') {
         xhttp.open("POST","/photocapsule/comment/",true);
         xhttp.setRequestHeader("X-CSRFToken", csrftoken);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
