@@ -44,7 +44,7 @@ def upload(request):
                 for category_id in selected_categories:
                     category = Category.objects.get(pk=category_id)
                     CategoryPhoto.objects.create(photoID=photo, categoryID=category)
-            return redirect(reverse('photocapsule:index'))
+            return redirect(reverse('photocapsule:profile', kwargs={'userPage':request.user}))
     else:
         initial_data = {'userID': request.user.pk}
         form = PhotoForm(initial=initial_data)
@@ -91,13 +91,13 @@ def editProfile(request, userPage):
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
-            return render(request, 'photocapsule/index.html')
+            messages.success(request, 'Your profile has been updated!')
+            return redirect(reverse('photocapsule:profile', kwargs={'userPage':request.POST.get('username')}))
 
     else:
         user_form = UserForm(instance=request.user)
         profile_form = ProfileForm(instance=request.user.userprofile)
-
-    return render(request, 'photocapsule/edit-profile.html', {'user_form': user_form, 'profile_form': profile_form})
+        return render(request, 'photocapsule/edit-profile.html', {'user_form': user_form, 'profile_form': profile_form})
 
 def photo(request, userPage, photo):
     context_dict = {}

@@ -33,6 +33,11 @@ function addComment() {
             if (response["status"] == "success") {
                 commentBox.value = '';
                 const commentContainer = document.getElementById("commentContainer");
+                console.log(commentContainer.innerHTML)
+                if (commentContainer.getAttribute("data-entry")=="True") {
+                    commentContainer.innerHTML = '';
+                    commentContainer.setAttribute("data-entry",False)
+                }
                 commentContainer.innerHTML = response['comment'] + commentContainer.innerHTML;
             }
         }
