@@ -9,4 +9,31 @@
     <p>{{ photo.title }}</p>
     <p>{{ photo.userID.username }}</p>
     <img id="photo" src="{{ photo.image.url }}" alt="Photo" />
+    <p>{{ photo.description }}</p>
+    <div>
+        <button disabled>Like</button>
+        <span id="likeCount">{{ photo.likes }}</span> Likes
+    </div>
+
+
+    <div>
+        <textarea rows="4" cols="50" placeholder="Type your comment here..." disabled></textarea>
+        <br>
+        <button disabled>Add Comment</button>
+    </div>
+
+    <div>
+        <h3>Comments:</h3>
+        <ul>
+            {% for comment in photo.comment_set.all %}
+                <li style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+                    <p>{{ comment.content }}</p>
+                    <p>{{ comment.userID.username }}</p>
+                    <p>{{ comment.uploadDate }}</p>
+                </li>
+            {% empty %}
+                <li>No comments yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
