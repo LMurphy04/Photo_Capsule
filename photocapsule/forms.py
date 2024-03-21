@@ -10,8 +10,7 @@ class UserForm(forms.ModelForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ['profilePicture']
-        
+        fields = ['profilePicture']    
         
 class PhotoForm(forms.ModelForm):
     categories = forms.ModelMultipleChoiceField(queryset=Category.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
@@ -25,6 +24,7 @@ class PhotoForm(forms.ModelForm):
         self.fields['likes'].widget = forms.HiddenInput()
         self.fields['userID'].widget = forms.HiddenInput()
         self.fields['description'].required = False
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         if commit:
@@ -36,5 +36,3 @@ class PhotoForm(forms.ModelForm):
         selected_categories = self.cleaned_data['categories']
         for category in selected_categories:
             CategoryPhoto.objects.create(photoID=instance.pk, categoryID=category.pk)
-        
-

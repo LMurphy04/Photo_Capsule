@@ -10,62 +10,83 @@
 {% endblock %}
 
 {% block body_block %}
-<h1 class="text-center pt-3">{% if userPage %}{{ userPage.username }}'s Profile{% else %}Profile Not Found{% endif %}</h1>
-<div class="container p-5 pt-3">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-3 rounded bg-light-blue border border-dark h-50">
-            <h2 class="text-light text-center mt-4 mb-4">Details</h2>
-            {% if userPage %}
-                <img class="img-fluid rounded border border-dark" src="{{ userPage.userprofile.profilePicture.url }}" alt="Profile Picture" />
-            {% else %}
-                <img class="img-fluid rounded border border-dark" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
-            {% endif %}
-            <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
+    <!--Profile Content-->
+    <h1 class="text-center pt-3">{% if userPage %}{{ userPage.username }}'s Profile{% else %}Profile Not Found{% endif %}</h1>
+    <div class="container p-5 pt-3">
+        <div class="row d-flex justify-content-center">
+            
+            <!--Profile Details-->
+            <div class="col-md-3 rounded bg-light-blue border border-dark h-50">
+                <h2 class="text-light text-center mt-4 mb-4">Details</h2>
+                
+                <!--Profile Picture-->
                 {% if userPage %}
-                    <li><b>{{ userPage.username }}</b></li>
-                    <li><i>{{ userPage.email }}</i></li>
-                    {% if userPage.username == user.username %}
-                        <li><a href="{% url 'photocapsule:edit-profile' user.username %}">Edit Profile</a></li>
+                    <img class="img-fluid rounded border border-dark w-100" src="{{ userPage.userprofile.profilePicture.url }}" alt="Profile Picture" />
+                {% else %}
+                    <img class="img-fluid rounded border border-dark w-100" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
+                {% endif %}
+                
+                <!--Profile Details-->
+                <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
+                    {% if userPage %}
+                        <li><b>{{ userPage.username }}</b></li>
+                        <li><i>{{ userPage.email }}</i></li>
+                        
+                        <!--If logged into profile being viewed, show edit profile button-->
+                        {% if userPage.username == user.username %}
+                            <li><a href="{% url 'photocapsule:edit-profile' user.username %}">Edit Profile</a></li>
+                        {% endif %}
+                        
+                    {% else %}
+                        User not found.
                     {% endif %}
-                {% else %}
-                    User not found.
-                {% endif %}
-            </ul>
-        </div>
-        <div class="col-md-6 mx-3 pb-2 rounded bg-light-blue border border-dark h-50">
-            <h2 class="text-light text-center mt-4 mb-4">Photos</h2>
-            <div id="photosContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
-                {% if photos %}
-                    {% for photo in photos %}
-                    <div data-likes="{{ photo.likes }}" data-upload="{{ photo.uploadDate.timestamp }}" class="photoBlock">
-                        <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
-                            <div class="p-2">
-                                <div class="row"><p class="text-start col mb-0">{{ photo.title }}</p><p class="text-end col mb-0">{{ photo.likes }}♥</p></div>
-                                <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
-                                <p>Author: {{ photo.userID.username }}</p>
-                            </div>
-                            {% if not forloop.last %}
-                                <hr/>
-                            {% endif %}
-                        </a>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="px-2 mb-0">No photos.</p>
-                {% endif %}
+                </ul>
+
             </div>
+
+            <!--Profile Photos-->
+            <div class="col-md-6 mx-3 pb-2 rounded bg-light-blue border border-dark h-50">
+                <h2 class="text-light text-center mt-4 mb-4">Photos</h2>
+                <div id="photosContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
+                    {% if photos %}
+                        {% for photo in photos %}
+                            <div data-likes="{{ photo.likes }}" data-upload="{{ photo.uploadDate.timestamp }}" class="photoBlock">
+                                <!--Photo-->
+                                <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
+                                    <div class="p-2">
+                                        <div class="row">
+                                            <p class="text-start col mb-0">{{ photo.title }}</p>
+                                            <p class="text-end col mb-0">{{ photo.likes }}♥</p>
+                                        </div>
+                                        <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
+                                        <p class="mb-0">Author: {{ photo.userID.username }}</p>
+                                    </div>
+                                </a>
+                                <!--Add dividor between each photo-->
+                                {% if not forloop.last %}
+                                    <hr/>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="px-2 mb-0">No photos.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!--Sort-->
+            {% if photos %}
+                <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
+                    <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
+                    <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
+                        <input onclick="sortPhotos('data-upload')" type="radio" id="recent" name="sort" value="recent" checked>
+                        <label for="recent">RECENT</label><br>
+                        <input onclick="sortPhotos('data-likes')" type="radio" id="mostLiked" name="sort" value="mostLiked">
+                        <label for="mostLiked">MOST LIKED</label>
+                    </ul>
+                </div>
+            {% endif %}
+
         </div>
-        {% if photos %}
-        <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
-            <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
-            <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
-                <input onclick="sortPhotos('data-upload')" type="radio" id="recent" name="sort" value="recent" checked>
-                <label for="recent">RECENT</label><br>
-                <input onclick="sortPhotos('data-likes')" type="radio" id="mostLiked" name="sort" value="mostLiked">
-                <label for="mostLiked">MOST LIKED</label>
-            </ul>
-        </div>
-        {% endif %}
     </div>
-</div>
 {% endblock %}

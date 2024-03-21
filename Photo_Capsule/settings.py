@@ -114,11 +114,6 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-REGISTRATION_OPEN = True
-REGISTRATION_AUTO_LOGIN = True
-LOGIN_REDIRECT_URL = 'photocapsule:index'
-LOGIN_URL = 'auth_login'
-
 USE_I18N = True
 
 USE_L10N = True
@@ -132,5 +127,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
+# Media files
+
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# django-registration-redux
+
+REGISTRATION_OPEN = True
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = 'photocapsule:index'
+LOGIN_URL = 'auth_login'

@@ -5,19 +5,25 @@
 {% endblock %}
 
 {% block body_block %}
-<div class="container p-5">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-4 rounded bg-light-blue border border-dark">
-            <h1 class="text-light text-center mt-4 mb-4">Login</h1>
-            <form class="text-light" method="post" action=".">
-                {% csrf_token %}
-                {{ form.as_p }}
-                
-                <input type="submit" value="Log In" />
-                <input type="hidden" name="next" value="{{ next }}" />
-            </form>
-            <a class="btn btn-light w-100 border border-dark mt-4 mb-4" href="{% url 'registration_register' %}"><u>Not registered? Register here!</u></a>
+    <!--Login Content-->
+    <div class="container p-5">
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-4 rounded bg-light-blue border border-dark">
+
+                <!--Login Form-->
+                <h1 class="text-light text-center mt-4 mb-4">Login</h1>
+                <form class="text-light" method="post" action=".">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    
+                    <input type="submit" value="Log In" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                </form>
+
+                <!--Register Link-->
+                <a class="btn btn-light w-100 border border-dark mt-4 mb-4" href="{% url 'registration_register' %}"><u>Not registered? Register here!</u></a>
+            
+            </div>
         </div>
     </div>
-</div>
 {% endblock %}
