@@ -113,7 +113,6 @@ def photo(request, userPage, photo):
         context_dict['photo'] = photo
     except:
         context_dict['photo'] = None
-        context_dict['userLiked'] = None
     return render(request, 'photocapsule/photo.html', context_dict)
 
 # Like/Dislike photo
