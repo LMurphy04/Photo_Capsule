@@ -41,7 +41,7 @@
                         <!--User Logged In Button-->
                         <div class="col-12 px-1">
                             {% if user.is_authenticated %}
-                                <a class="btn btn-light text-start border border-dark w-100" href="{% url 'photocapsule:profile' user.username %}"><u>User: {{ user.username }}</u></a>
+                                <a class="btn btn-light text-start border border-dark w-100" href="{% url 'photocapsule:profile' user.username %}"><u>Profile: {{ user.username }}</u></a>
                             {% else %}
                                 <a class="btn btn-light text-start border border-dark w-100" href="{% url 'auth_login' %}"><u>Logged Out</u></a>
                             {% endif %}
