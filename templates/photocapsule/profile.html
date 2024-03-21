@@ -16,9 +16,9 @@
         <div class="col-md-3 rounded bg-light-blue border border-dark h-50">
             <h2 class="text-light text-center mt-4 mb-4">Details</h2>
             {% if userPage %}
-                <img class="img-fluid rounded border border-dark" src="{{ userPage.userprofile.profilePicture.url }}" alt="Profile Picture" />
+                <img class="img-fluid rounded border border-dark w-100" src="{{ userPage.userprofile.profilePicture.url }}" alt="Profile Picture" />
             {% else %}
-                <img class="img-fluid rounded border border-dark" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
+                <img class="img-fluid rounded border border-dark w-100" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
             {% endif %}
             <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
                 {% if userPage %}
