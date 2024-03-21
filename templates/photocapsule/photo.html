@@ -8,6 +8,7 @@
 
 {% block script_block %}
     <script src="{% static 'js/ajax.js' %}" type="text/javascript"></script>
+    <!--JavaScript variables for current user and photo being viewed-->
     <script>
         var photo = '{{ photo.id }}';
         var user = '{{ user }}';
@@ -15,62 +16,97 @@
 {% endblock %}
 
 {% block body_block %}
-<div class="row d-flex justify-content-center mt-4">
-    <div class="col-md-4 rounded bg-light-blue border border-dark h-50 p-2 mx-4 mb-2">
-        <div class="rounded bg-light border border-dark p-3">
-        {% if photo %}
-            <div class="row">
-                <div class="col-md-4">
-                    <img class="img-fluid rounded border border-dark w-100 p-0" src="{{ photo.userID.userprofile.profilePicture.url }}" alt="Profile Picture" />
-                </div>
-                <div class="col">
-                    <p class="mb-1"><a class="link-dark" href="{% url 'photocapsule:profile-results' photo.userID.username %}"><b>{{ photo.userID.username }}</b></a></p>
-                    <hr/>
+    <!--Photo Details Content-->
+    <div class="row d-flex justify-content-center mt-4">
+        
+        <!--Photo Details-->
+        <div class="col-md-4 rounded bg-light-blue border border-dark h-50 p-2 mx-4 mb-2">
+
+            <!--Photo Info-->
+            <div class="rounded bg-light border border-dark p-3">
+                {% if photo %}
                     <div class="row">
-                        <div class="mb-0 col-5"><b>Likes:</b><p id="likeCount" class="col">{{ photo.likes }}</p></div>
-                        <div class="col-7"><b>Upload Date:</b><p>{{ photo.uploadDate|date:'d-m-Y' }}</p></div>
-                    </div>
-                    <hr/>
-                    <p class="mb-0"><b>Description:</b><br/>{% if photo.description %}{{ photo.description }}{% else %}No Description.{% endif %}</p>
-                </div>
-            </div>
-        {% else %}
-            <img class="img-fluid rounded border border-dark" src="{{ MEDIA_URL }}profile_pictures/default.png" alt="Profile Picture" />
-        {% endif %}
-    </div>
-    <div class="rounded bg-light border border-dark p-3 mt-2">
-        <div>
-            <b>Comments:</b>
-            {% if user.is_authenticated %}
-            <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
-            <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
-            {% else %}
-            <p>Log In to Comment!</p>
-            {% endif %}
-            <hr>
-            <div id="commentContainer" data-empty="{% if photo.comment_set.all|length == 0 %}True{% else %}False{% endif %}" class="p-2 overflow-auto commentBox">
-                {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
-                    <div class="p-1">
-                        <div class="row fw-bold">
-                            <p class="col-8 mb-0">{{ comment.userID.username }}</p>
-                            <p class="col-4 text-end mb-0">{{ comment.uploadDate|date:'d-m-Y' }}</p>
+                        <!--Profile Picture-->
+                        <div class="col-md-4">
+                            <img class="img-fluid rounded border border-dark w-100 p-0" src="{{ photo.userID.userprofile.profilePicture.url }}" alt="Profile Picture" />
                         </div>
-                        <p class="mb-1">{{ comment.content }}</p>
+                        <div class="col">
+                            <!--Username-->
+                            <p class="mb-1"><a class="link-dark" href="{% url 'photocapsule:profile-results' photo.userID.username %}"><b>{{ photo.userID.username }}</b></a></p>
+                            <hr/>
+                            <div class="row">
+                                <!--Likes-->
+                                <div class="mb-0 col-5">
+                                    <b>Likes:</b>
+                                    <p id="likeCount" class="col">{{ photo.likes }}</p>
+                                </div>
+                                <!--Upload Date-->
+                                <div class="col-7">
+                                    <b>Upload Date:</b>
+                                    <p>{{ photo.uploadDate|date:'d-m-Y' }}</p>
+                                </div>
+                            </div>
+                            <hr/>
+                            <!--Description-->
+                            <p class="mb-0"><b>Description:</b><br/>{% if photo.description %}{{ photo.description }}{% else %}No Description.{% endif %}</p>
+                        </div>
                     </div>
-                {% empty %}
-                    <p>No comments yet.</p>
-                {% endfor %}
+                {% else %}
+                    <!--If URL doesn't point to an existing image-->
+                    <p>Image Not Found!</p>
+                {% endif %}
+            </div>
+
+        {% if photo %}
+            <!--Comments-->
+            <div class="rounded bg-light border border-dark p-3 mt-2">
+                <b>Comments:</b>
+                {% if user.is_authenticated %}
+                    <!--Add Comment-->
+                    <textarea id="comment" class="w-100" maxlength="300" rows="3" placeholder="Type your comment here..."></textarea>
+                    <button onclick=addComment() class="btn btn-light border border-dark p-1 w-100">Add Comment</button>
+                {% else %}
+                    <p>Log In to Comment!</p>
+                {% endif %}
+                <hr>
+
+                <!--Comments Container-->
+                <div id="commentContainer" data-empty="{% if photo.comment_set.all|length == 0 %}True{% else %}False{% endif %}" class="p-2 overflow-auto commentBox">
+                    {% for comment in photo.comment_set.all|dictsortreversed:"uploadDate" %}
+                        <!--Comment-->
+                        <div class="p-1">
+                            <div class="row fw-bold">
+                                <p class="col-8 mb-0">{{ comment.userID.username }}</p>
+                                <p class="col-4 text-end mb-0">{{ comment.uploadDate|date:'d-m-Y' }}</p>
+                            </div>
+                            <p class="mb-1">{{ comment.content }}</p>
+                        </div>
+                    {% empty %}
+                        <p>No comments yet.</p>
+                    {% endfor %}
+                </div>
+
             </div>
         </div>
-    </div>
-    </div>
-    <div class="col-md-6 p-2 rounded h-50 bg-light-blue border border-dark mb-2">
-        <div id="photosContainer" class="rounded bg-light border border-dark p-3">
-                <div class="photoBlock">
-                            <div class="row mb-2"><p class="text-start col mb-0">{{ photo.title }}</p><div class="col">{% if user.is_authenticated %}<button id="likeButton" data-like-or-unlike="{% hasLikedPhoto user=user photo=photo %}" onclick=like_unlike(this) class="btn btn-light border border-dark p-1 float-end">{% hasLikedPhoto user=user photo=photo %} ♥</button>{% else %}<p class="float-end">Log In to Like!</p>{% endif %}</div></div>
-                            <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0 w-100" />
+
+        <!--Photo-->
+        <div class="col-md-6 p-2 rounded h-50 bg-light-blue border border-dark mb-2">
+            <div id="photosContainer" class="rounded bg-light border border-dark p-3">
+                <div class="row mb-2">
+                    <p class="text-start col mb-0">{{ photo.title }}</p>
+                    <div class="col">
+                        <!--Like Button-->
+                        {% if user.is_authenticated %}
+                            <button id="likeButton" data-like-or-unlike="{% hasLikedPhoto user=user photo=photo %}" onclick=like_unlike(this) class="btn btn-light border border-dark p-1 float-end">{% hasLikedPhoto user=user photo=photo %} ♥</button>
+                        {% else %}
+                            <p class="float-end">Log In to Like!</p>
+                        {% endif %}
+                    </div>
                 </div>
+                <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0 w-100" />
+            </div>
         </div>
+        {% endif %}
+
     </div>
-</div>
 {% endblock %}

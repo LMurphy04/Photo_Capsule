@@ -10,54 +10,67 @@
 {% endblock %}
 
 {% block body_block %}
-<h1 class="text-center pt-3">{% if category %}{% if category == 'All' %}All Categories{% else %}{{ category.categoryName }}{% endif %}{% else %}Category Not Found{% endif %}</h1>
-<div class="container p-5 pt-3">
-    <div class="row d-flex justify-content-center">
-        <div class="col-md-3 rounded bg-light-blue border border-dark h-50">
-            <h2 class="text-light text-center mt-4 mb-4">Details</h2>
-            <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
-                {% if category %}
-                    <li><b>{% if category == 'All' %}All Categories{% else %}{{ category.categoryName }}{% endif %}</b></li>
-                    <li><i>Posts: {{ photos|length }}</i></li>
-                {% else %}
-                    Category not found.
-                {% endif %}
-            </ul>
-        </div>
-        <div class="col-md-6 mx-3 pb-2 rounded bg-light-blue border border-dark">
-            <h2 class="text-light text-center mt-4 mb-4">Photos</h2>
-            <div id="photosContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
-                {% if photos %}
-                    {% for photo in photos %}
-                    <div data-likes="{{ photo.likes }}" data-upload="{{ photo.uploadDate.timestamp }}" class="photoBlock">
-                        <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
-                            <div class="p-2">
-                                <div class="row"><p class="text-start col mb-0">{{ photo.title }}</p><p class="text-end col mb-0">{{ photo.likes }}♥</p></div>
-                                <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
-                                <p class="mb-0">Author: {{ photo.userID.username }}</p>
-                            </div>
-                            {% if not forloop.last %}
-                                <hr/>
-                            {% endif %}
-                        </a>
-                    </div>
-                    {% endfor %}
-                {% else %}
-                    <p class="px-2 mb-0">No photos.</p>
-                {% endif %}
+    <!--Category Content-->
+    <h1 class="text-center pt-3">{% if category %}{% if category == 'All' %}All Categories{% else %}{{ category.categoryName }}{% endif %}{% else %}Category Not Found{% endif %}</h1>
+    <div class="container p-5 pt-3">
+        <div class="row d-flex justify-content-center">
+            
+            <!--Category Details-->
+            <div class="col-md-3 rounded bg-light-blue border border-dark h-50">
+                <h2 class="text-light text-center mt-4 mb-4">Details</h2>
+                <ul class="list-unstyled rounded bg-light border border-dark mt-3 p-3">
+                    {% if category %}
+                        <li><b>{% if category == 'All' %}All Categories{% else %}{{ category.categoryName }}{% endif %}</b></li>
+                        <li><i>Posts: {{ photos|length }}</i></li>
+                    {% else %}
+                        Category not found.
+                    {% endif %}
+                </ul>
             </div>
+
+            <!--Profile Photos-->
+            <div class="col-md-6 mx-3 pb-2 rounded bg-light-blue border border-dark">
+                <h2 class="text-light text-center mt-4 mb-4">Photos</h2>
+                <div id="photosContainer" class="rounded bg-light border border-dark mt-3 pt-3 pb-3 mb-2">
+                    {% if photos %}
+                        {% for photo in photos %}
+                            <div data-likes="{{ photo.likes }}" data-upload="{{ photo.uploadDate.timestamp }}" class="photoBlock">
+                                <!--Photo-->
+                                <a href="{% url 'photocapsule:photo' photo.userID photo.id %}" class="link-dark link-underline-opacity-0">
+                                    <div class="p-2">
+                                        <div class="row">
+                                            <p class="text-start col mb-0">{{ photo.title }}</p>
+                                            <p class="text-end col mb-0">{{ photo.likes }}♥</p>
+                                        </div>
+                                        <img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" class="img-fluid border border-dark p-0" />
+                                        <p class="mb-0">Author: {{ photo.userID.username }}</p>
+                                    </div>
+                                </a>
+                                <!--Add dividor between each photo-->
+                                {% if not forloop.last %}
+                                    <hr/>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="px-2 mb-0">No photos.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!--Sort-->
+            {% if photos %}
+                <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
+                    <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
+                    <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
+                        <input onclick="sortPhotos('data-upload')" type="radio" id="recent" name="sort" value="recent" checked>
+                        <label for="recent">RECENT</label><br>
+                        <input onclick="sortPhotos('data-likes')" type="radio" id="mostLiked" name="sort" value="mostLiked">
+                        <label for="mostLiked">MOST LIKED</label>
+                    </ul>
+                </div>
+            {% endif %}
+
         </div>
-        {% if photos %}
-        <div class="col-md-2 rounded bg-light-blue border border-dark h-50">
-            <h2 class="text-light text-center mt-4 mb-4">Sort</h2>
-            <ul class="rounded bg-light border border-dark mt-3 pt-3 pb-3">
-                <input onclick="sortPhotos('data-upload')" type="radio" id="recent" name="sort" value="recent" checked>
-                <label for="recent">RECENT</label><br>
-                <input onclick="sortPhotos('data-likes')" type="radio" id="mostLiked" name="sort" value="mostLiked">
-                <label for="mostLiked">MOST LIKED</label>
-            </ul>
-        </div>
-        {% endif %}
     </div>
-</div>
 {% endblock %}
