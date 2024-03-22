@@ -1,5 +1,8 @@
+commonmark==0.9.1
 Django==2.2.28
 django-registration-redux==2.2
+ipycanvas==0.13.1
 pillow==10.2.0
 pytz==2024.1
+rich==12.5.1
 sqlparse==0.4.4
