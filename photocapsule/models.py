@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     profilePicture = models.ImageField(upload_to='profile_pictures', default='profile_pictures/default.png') 
+    
     def __str__(self):
         return self.user.username
 
@@ -20,6 +21,7 @@ class Photo(models.Model):
     image = models.ImageField(upload_to='uploads', blank=False)
     likes = models.IntegerField(default=0)
     uploadDate = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return self.title
 
@@ -36,8 +38,6 @@ class Comment(models.Model):
     userID = models.ForeignKey(User, on_delete=models.CASCADE)
     content = models.CharField(max_length=250)
     uploadDate = models.DateTimeField(auto_now_add=True)
-    #unsure of how it will be used so can be edited later
+    
     def __str__(self):
         return str(self.userID) + ' ' + str(self.photoID) + ' ' + str(self.uploadDate)
-    
-

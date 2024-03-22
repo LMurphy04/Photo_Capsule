@@ -28,7 +28,7 @@ SECRET_KEY = 'um3w^bj&!uz_$^d$@r52c7+--t@j!8y%%%d%m=u$+--jik@(gu'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['wadteam6c.pythonanywhere.com','127.0.0.1']
 
 
 # Application definition
@@ -114,11 +114,6 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
-REGISTRATION_OPEN=True
-REGISTRATION_AUTO_LOGIN = True
-LOGIN_REDIRECT_URL = 'photocapsule:index'
-LOGIN_URL = 'auth_login'
-
 USE_I18N = True
 
 USE_L10N = True
@@ -132,5 +127,14 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR, ]
 
+# Media files
+
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
+
+# django-registration-redux
+
+REGISTRATION_OPEN = True
+REGISTRATION_AUTO_LOGIN = True
+LOGIN_REDIRECT_URL = 'photocapsule:index'
+LOGIN_URL = 'auth_login'

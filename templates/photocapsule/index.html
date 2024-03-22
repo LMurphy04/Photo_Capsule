@@ -6,21 +6,45 @@
 {% endblock %}
 
 {% block body_block %}
-    <h1>Homepage</h1>
-    <h2>Recent</h2>
-    {% if recent %}
-        {% for photo in recent %}
-        <li><p>{{ photo.title }}</p><img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" /></li>
-        {% endfor %}
-    {% else %}
-        No photos.
-    {% endif %}
-    <h2>Trending</h2>
-    {% if likes %}
-        {% for photo in likes %}
-        <li><p>{{ photo.title }}</p><img id="accountPhoto" src="{{ photo.image.url }}" alt="{{ photo.title }}" /></li>
-        {% endfor %}
-    {% else %}
-        No photos.
-    {% endif %}
+    <!--Homepage Content-->
+    <h1 class="text-center pt-3">Homepage</h1>
+    
+    <!--Recent Photos-->
+    <div class="container-fluid px-5 pt-3">
+        <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
+            <div class="col-2 text-light text-center">
+                <h2>Recent</h2>
+                <p>The latest photos on the website, click the photos for more details!</p>
+            </div>
+            {% if recent %}
+                {% for photo in recent %}
+                    <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">
+                        <img class="w-100 border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p class="col-4 text-light text-center">No photos.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!--Trending Photos-->
+    <div class="container-fluid px-5 pt-3 pb-5">
+        <div class="row rounded bg-light-blue border border-dark align-items-center p-2">
+            <div class="col-2 text-light text-center">
+                <h2>Trending</h2>
+                <p>The most liked photos of the last 24hrs, click the photos for more details!</p>
+            </div>
+            {% if likes %}
+                {% for photo in likes %}
+                    <a class="col" href="{% url 'photocapsule:photo' photo.userID photo.id %}">
+                        <img class="w-100 border border-dark" src="{{ photo.image.url }}" alt="{{ photo.title }}" />
+                    </a>
+                {% endfor %}
+            {% else %}
+                <p class="col-4 text-light text-center">No photos.</p>
+            {% endif %}
+        </div>
+    </div>
+
 {% endblock %}

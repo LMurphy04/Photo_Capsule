@@ -1,0 +1,26 @@
+#navbar-logo {
+    height: 75px;
+}
+
+/* Main website colours */
+.bg-blue {
+    background-color: #4c4cfd;
+}
+
+.bg-light-blue {
+    background-color: #8686fe;
+}
+
+/* Used for comment box */
+textarea {
+    resize: none;
+}
+
+/* Prevents comments list and profiles list from making page massive when there is lots of data */
+.commentBox {
+    max-height:20vh;
+}
+
+#profile-list {
+    max-height:50vh;
+}
