@@ -141,6 +141,6 @@ def addComment(request):
         user = User.objects.get(username=request.POST.get('user'))
         photo = Photo.objects.get(id=request.POST.get('photo'))
         newComment = Comment.objects.create(content=comment,photoID=photo,userID=user)
-        comment_html = render_to_string('page_sections\comment.html', {'comment': newComment}) # Render new comment
+        comment_html = render_to_string('page_sections/comment.html', {'comment': newComment}) # Render new comment
         return JsonResponse({"status": "success", "comment": comment_html})
     return JsonResponse({"status": "error"})
